@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+    <!--  cache eviction="WEAK" flushInterval="30000" readOnly="true" size="512"></cache  -->
+
+    <resultMap type="java.util.Map" id="memberMap">
+        <result property="SELF_INTRO" column="SELF_INTRO" javaType="String" jdbcType="CLOB"/>
+    </resultMap>
+
+
+    <select id="login" parameterType="java.util.Map" resultMap="memberMap">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT,
+               case
+                   when nvl(USE_AGREE_DT, ADD_MONTHS(sysdate, - 36)) <![CDATA[<]]> ADD_MONTHS(sysdate, - 24) then 'N'
+                   else 'Y' end as agree_yn
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+          AND A.pwd = #{user_pw}
+          AND A.use_yn = 'Y'
+    </select>
+
+    <select id="userDetail" parameterType="java.util.Map" resultMap="memberMap">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+          AND A.use_yn = 'Y'
+    </select>
+
+    <select id="userAdminDetail" parameterType="java.util.Map" resultMap="memberMap">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+    </select>
+
+    <select id="loginExists" parameterType="java.util.Map" resultType="int">
+        SELECT count(*)
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+    </select>
+
+    <select id="loginModifyExists" parameterType="java.util.Map" resultType="int">
+        SELECT count(*)
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+          AND A.pwd = #{curr_pwd}
+    </select>
+
+    <select id="userGpin" parameterType="java.util.Map" resultMap="memberMap">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE A.USER_GPIN = #{user_gpin , jdbcType=VARCHAR}
+          AND A.USER_TYPE = #{user_type , jdbcType=VARCHAR}
+          AND A.use_yn = 'Y'
+
+    </select>
+
+    <select id="emailUserList" parameterType="java.util.Map" resultMap="memberMap">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE 1 = 1
+          AND A.use_yn = 'Y'
+    </select>
+
+
+    <insert id="userInsert" parameterType="java.util.Map">
+        INSERT INTO TB_USER
+        (USER_ID,
+         PWD,
+         USER_NM,
+         USER_TYPE,
+         USE_YN,
+         REG_DT,
+         REG_IP,
+         USER_NICK,
+         VISIT_DT,
+         TELNO,
+         USER_GPIN,
+         USE_AGREE_DT,
+         PERSON_AGREE_DT)
+        VALUES (#{USER_ID ,jdbcType=VARCHAR},
+                #{PWD ,jdbcType=VARCHAR},
+                #{USER_NM ,jdbcType=VARCHAR},
+                #{USER_TYPE ,jdbcType=VARCHAR},
+                nvl(#{use_yn  , jdbcType=VARCHAR}, 'Y'),
+                to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'),
+                #{reg_ip ,jdbcType=VARCHAR},
+                #{user_nick ,jdbcType=VARCHAR},
+                #{visit_dp ,jdbcType=DATE},
+                #{telno ,jdbcType=VARCHAR},
+                #{user_gpin ,jdbcType=VARCHAR},
+                #{use_agree_dt ,jdbcType=DATE},
+                #{person_agee_dt ,jdbcType=DATE})
+    </insert>
+
+    <!-- 회원  수정하기 -->
+    <update id="userUpdate" parameterType="java.util.Map">
+        UPDATE TB_USER
+        SET PWD             = Nvl(#{pwd,      jdbcType=VARCHAR}, pwd),
+            USER_NM         = Nvl(#{user_nm,  jdbcType=VARCHAR}, user_nm),
+            USER_TYPE       = Nvl(#{user_type,jdbcType=VARCHAR}, USER_TYPE),
+            USE_YN          = Nvl(#{use_yn,   jdbcType=VARCHAR}, USE_YN),
+            USER_NICK       = Nvl(#{user_nick,jdbcType=VARCHAR}, user_nick),
+            VISIT_DT        = Nvl(#{visit_dt,jdbcType=DATE}, visit_dt),
+            TELNO           = Nvl(#{telno,jdbcType=VARCHAR}, telno),
+            USE_AGREE_DT    = Nvl(#{use_agree_dt,jdbcType=DATE}, use_agree_dt),
+            PERSON_AGREE_DT = Nvl(#{person_agree_dt,jdbcType=DATE}, person_agree_dt)
+        WHERE USER_ID = #{user_id}
+    </update>
+
+</mapper>

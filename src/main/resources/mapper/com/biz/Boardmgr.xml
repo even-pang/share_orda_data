@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardmgr">
+<!--  cache eviction="WEAK" flushInterval="30000" readOnly="true" size="512"></cache  -->
+
+  <resultMap type="java.util.Map" id="boardMap">
+     <result property="CTNT" column="CTNT" javaType="String" jdbcType="CLOB"/>
+     <result property="ANS_CTNT" column="ANS_CTNT" javaType="String" jdbcType="CLOB"/>     
+  </resultMap>
+ 
+  <select id="boardMgrList" parameterType="java.util.Map"   resultType="java.util.Map">  	
+          SELECT  A.*      
+	      FROM TB_BOARDMGR A  
+	      <where>
+	         <if test="brd_nm != null"> AND A.brd_nm  like '%' ||  #{brd_nm} || '%'</if>
+	         <if test="use_yn != null"> AND A.use_yn = #{use_yn} </if>
+	      </where>
+	  
+	     <if test="sort_ord != null"> ORDER BY ${sort_ord} </if>
+	     <if test="sort_ord == null"> ORDER BY A.BRD_MGRNO DESC</if> 
+  </select>     
+ 
+  <select id="boardMgrCount" parameterType="java.util.Map"   resultType="int">      
+	      SELECT count(*)
+	      FROM TB_BOARDMGR A        
+
+	      <where>
+	          <if test="brd_nm     != null"> AND A.brd_nm  like '%' ||  #{brd_nm} || '%'</if>
+	         <if test="use_yn   != null"> AND A.use_yn    = #{use_yn} </if>
+	      </where>
+
+   </select>   
+ 
+  <select id="boardMgrNextValue" parameterType="java.util.Map"   resultType="int">
+	      SELECT SEQ_TB_BOARDMGR.nextval
+	      FROM dual
+  </select>   
+  
+
+  <select id="boardMgrDetail"  parameterType="java.util.Map"   resultMap="boardMap">  	  	 
+	      SELECT  A.* 
+	      FROM TB_BOARDMGR A 
+	      WHERE BRD_MGRNO = #{brd_mgrno, jdbcType=INTEGER}       
+  </select>  
+  
+ 
+  
+
+  <insert  id="boardMgrInsert" parameterType="java.util.Map"  >
+		INSERT INTO TB_BOARDMGR
+		(
+		         BRD_MGRNO          ,
+		         BRD_NM             ,
+		         SITE_GB            ,
+		         BRD_SNM            ,
+		         BRD_SKIN_CD        ,
+		         USE_YN             ,
+		         LIST_CNT           ,
+		         DELFLAG            ,
+		         WRITE_AUTH_CD      ,
+		         ATTACH_FILE_CNT    ,
+		         WRITER_USE_YN      ,
+		         PHONE_USE_YN       ,
+		         EMAIL_USE_YN       ,
+		         EMAIL_RECV_USE_YN  ,
+		         TERM_USE_YN        ,
+		         ADDR_USE_YN        ,
+		         SECRET_USE_YN      ,
+		         REPLY_USE_YN       ,
+		         REGDT_USE_YN       ,
+		         CMT_USE_YN         ,
+		         THM_WIDTH_SIZE     ,
+		         THM_HEIGHT_SIZE    ,
+		         DATE_USE_YN        ,
+		         DATE_TITLE         ,
+		         URL_USE_YN         ,
+		         POPSIZE_USE_YN     ,
+		         DIRECT_URL_USE_YN  ,
+		         TERM_SDT_TITLE     ,
+		         TERM_EDT_TITLE     ,
+				 CATE_CD_USE_YN     ,		
+				 CATE_CD            ,	
+				 CATE_CD_TITLE      ,    	
+				 TOP_FIX_USE_YN     ,
+				 TOTAL_SEARCH_USE_YN,	
+				 ORD_USE_YN         ,	
+				 CTNT_USE_YN        ,		         
+		         ETC_FIELD1_USE_YN  ,
+		         ETC_FIELD1_TITLE   ,
+		         ETC_FIELD2_USE_YN  ,
+		         ETC_FIELD2_TITLE   ,
+		         ETC_FIELD3_USE_YN  ,
+		         ETC_FIELD3_TITLE   ,	
+		         ETC_FIELD4_USE_YN  ,
+		         ETC_FIELD4_TITLE   ,		         	         		         
+		         BRD_DESC           ,
+		         REG_DT             ,
+		         REG_IP
+		) VALUES (      
+		         SEQ_TB_BOARDMGR.nextval ,
+		         #{brd_nm             ,  jdbcType=VARCHAR } ,
+		         #{site_gb            ,  jdbcType=VARCHAR } ,
+		         #{brd_snm            ,  jdbcType=VARCHAR } ,
+		         #{brd_skin_cd        ,  jdbcType=VARCHAR } ,
+		         #{use_yn             ,  jdbcType=VARCHAR } ,
+		         #{list_cnt           ,  jdbcType=INTEGER } ,
+		         #{delflag            ,  jdbcType=VARCHAR } ,
+		         #{write_auth_cd      ,  jdbcType=VARCHAR } ,
+		         #{attach_file_cnt    ,  jdbcType=INTEGER } ,
+		         #{writer_use_yn      ,  jdbcType=VARCHAR } ,
+		         #{phone_use_yn       ,  jdbcType=VARCHAR } ,
+		         #{email_use_yn       ,  jdbcType=VARCHAR } ,
+		         #{email_recv_use_yn  ,  jdbcType=VARCHAR } ,		         
+		         #{term_use_yn        ,  jdbcType=VARCHAR } ,
+		         #{addr_use_yn        ,  jdbcType=VARCHAR } ,
+		         #{secret_use_yn      ,  jdbcType=VARCHAR } ,
+		         #{reply_use_yn       ,  jdbcType=VARCHAR } ,
+		         #{regdt_use_yn       ,  jdbcType=VARCHAR } ,
+		         #{cmt_use_yn         ,  jdbcType=VARCHAR } ,
+		         #{thm_width_size     ,  jdbcType=VARCHAR } ,
+		         #{thm_height_size    ,  jdbcType=VARCHAR } ,
+		         #{date_use_yn        ,  jdbcType=VARCHAR } ,		         
+		         #{date_title         ,  jdbcType=VARCHAR } ,
+		         #{url_use_yn         ,  jdbcType=VARCHAR } ,
+		         #{popsize_use_yn     ,  jdbcType=VARCHAR } ,
+		         #{direct_url_use_yn  ,  jdbcType=VARCHAR } ,
+		         #{term_sdt_title     ,  jdbcType=VARCHAR } ,
+		         #{term_edt_title     ,  jdbcType=VARCHAR } ,
+		         #{cate_cd_use_yn     ,  jdbcType=VARCHAR } ,
+		         #{cate_cd            ,  jdbcType=VARCHAR } ,
+		         #{cate_cd_title      ,  jdbcType=VARCHAR } ,
+		         #{top_fix_use_yn     ,  jdbcType=VARCHAR } ,
+		         #{total_search_use_yn,  jdbcType=VARCHAR } ,
+		         #{ord_use_yn         ,  jdbcType=VARCHAR } ,		         
+		         #{ctnt_use_yn        ,  jdbcType=VARCHAR } ,
+		         #{etc_field1_use_yn  ,  jdbcType=VARCHAR } ,
+		         #{etc_field1_title   ,  jdbcType=VARCHAR } ,
+		         #{etc_field2_use_yn  ,  jdbcType=VARCHAR } ,
+		         #{etc_field2_title   ,  jdbcType=VARCHAR } ,
+		         #{etc_field3_use_yn  ,  jdbcType=VARCHAR } ,
+		         #{etc_field3_title   ,  jdbcType=VARCHAR } ,		         		         
+		         #{etc_field4_use_yn  ,  jdbcType=VARCHAR } ,
+		         #{etc_field4_title   ,  jdbcType=VARCHAR } ,		         
+		         #{brd_desc           ,  jdbcType=VARCHAR } ,
+		         to_char(sysdate, 'yyyymmddhh24miss')       ,
+		         #{reg_ip             ,  jdbcType=VARCHAR }  
+		)
+  </insert>   
+   
+ 
+  <update id="boardMgrUpdate" parameterType="java.util.Map" >
+		UPDATE TB_BOARDMGR
+		SET      BRD_NM               = #{brd_nm             ,  jdbcType=VARCHAR } ,
+		         SITE_GB              = #{site_gb            ,  jdbcType=VARCHAR } ,  
+		         BRD_SNM              = #{brd_snm            ,  jdbcType=VARCHAR } ,  
+		         BRD_SKIN_CD          = #{brd_skin_cd        ,  jdbcType=VARCHAR } ,  
+		         USE_YN               = #{use_yn             ,  jdbcType=VARCHAR } ,
+		         DIRECT_URL_USE_YN    = #{direct_url_use_yn  ,  jdbcType=VARCHAR } ,
+		         TOTAL_SEARCH_USE_YN  = #{total_search_use_yn,  jdbcType=VARCHAR } ,  
+		         ORD_USE_YN           = #{ord_use_yn         ,  jdbcType=VARCHAR } ,		          
+		         LIST_CNT             = #{list_cnt           ,  jdbcType=INTEGER } ,  
+		         DELFLAG              = #{delflag            ,  jdbcType=VARCHAR } ,  
+		         WRITE_AUTH_CD        = #{write_auth_cd      ,  jdbcType=VARCHAR } ,  
+		         ATTACH_FILE_CNT      = #{attach_file_cnt    ,  jdbcType=INTEGER } ,  
+		         WRITER_USE_YN        = #{writer_use_yn      ,  jdbcType=VARCHAR } ,  
+		         PHONE_USE_YN         = #{phone_use_yn       ,  jdbcType=VARCHAR } ,  
+		         EMAIL_USE_YN         = #{email_use_yn       ,  jdbcType=VARCHAR } ,  
+		         EMAIL_RECV_USE_YN    = #{email_recv_use_yn  ,  jdbcType=VARCHAR } ,
+		         TERM_USE_YN          = #{term_use_yn        ,  jdbcType=VARCHAR } ,  
+		         ADDR_USE_YN          = #{addr_use_yn        ,  jdbcType=VARCHAR } ,  
+		         SECRET_USE_YN        = #{secret_use_yn      ,  jdbcType=VARCHAR } ,  
+		         REPLY_USE_YN         = #{reply_use_yn       ,  jdbcType=VARCHAR } ,  
+		         REGDT_USE_YN         = #{regdt_use_yn       ,  jdbcType=VARCHAR } ,  
+		         CMT_USE_YN           = #{cmt_use_yn         ,  jdbcType=VARCHAR } ,
+		         DATE_USE_YN          = #{date_use_yn        ,  jdbcType=VARCHAR } ,
+		         DATE_TITLE           = #{date_title         ,  jdbcType=VARCHAR } ,
+		         URL_USE_YN           = #{url_use_yn         ,  jdbcType=VARCHAR } ,
+		         POPSIZE_USE_YN       = #{popsize_use_yn     ,  jdbcType=VARCHAR } ,
+		         TERM_SDT_TITLE       = #{term_sdt_title     ,  jdbcType=VARCHAR } ,
+		         TERM_EDT_TITLE       = #{term_edt_title     ,  jdbcType=VARCHAR } ,		           
+		         THM_WIDTH_SIZE       = #{thm_width_size     ,  jdbcType=VARCHAR } ,  
+		         THM_HEIGHT_SIZE      = #{thm_height_size    ,  jdbcType=VARCHAR } ,  
+		         		       
+				 CATE_CD_USE_YN       = #{cate_cd_use_yn     ,  jdbcType=VARCHAR } ,  		
+				 CATE_CD              = #{cate_cd            ,  jdbcType=VARCHAR } ,
+				 CATE_CD_TITLE        = #{cate_cd_title      ,  jdbcType=VARCHAR } ,  		
+				 TOP_FIX_USE_YN       = #{top_fix_use_yn     ,  jdbcType=VARCHAR } ,  		       
+		         CTNT_USE_YN          = #{ctnt_use_yn        ,  jdbcType=VARCHAR } ,
+		         ETC_FIELD1_USE_YN    = #{etc_field1_use_yn  ,  jdbcType=VARCHAR } ,
+		         ETC_FIELD1_TITLE     = #{etc_field1_title   ,  jdbcType=VARCHAR } ,		       
+		         
+		         ETC_FIELD2_USE_YN    = #{etc_field2_use_yn  ,  jdbcType=VARCHAR } ,
+		         ETC_FIELD2_TITLE     = #{etc_field2_title   ,  jdbcType=VARCHAR } ,		         
+		         
+		         ETC_FIELD3_USE_YN    = #{etc_field3_use_yn  ,  jdbcType=VARCHAR } ,
+		         ETC_FIELD3_TITLE     = #{etc_field3_title   ,  jdbcType=VARCHAR } ,
+		         
+		         ETC_FIELD4_USE_YN    = #{etc_field4_use_yn  ,  jdbcType=VARCHAR } ,
+		         ETC_FIELD4_TITLE     = #{etc_field4_title   ,  jdbcType=VARCHAR } ,		         
+		         
+		         BRD_DESC             = #{brd_desc           ,  jdbcType=VARCHAR } 
+		WHERE    BRD_MGRNO            = #{brd_mgrno          ,  jdbcType=INTEGER }     
+  </update>     
+  
+
+  <delete id="boardMgrDelete" parameterType="java.util.Map" >
+		DELETE FROM TB_BOARDMGR   
+		WHERE BRD_MGRNO = #{brd_mgrno}               
+  </delete>   
+      
+ 
+  <update id="boardMgrRegCntAdd" parameterType="java.util.Map" >
+		UPDATE TB_BOARDMGR
+		SET    BRD_REG_CNT = nvl(BRD_REG_CNT, 0) + 1   
+		WHERE BRD_MGRNO = #{brd_mgrno}               
+  </update>   
+   
+  <update id="boardMgrRegCntSub" parameterType="java.util.Map" >
+		UPDATE TB_BOARDMGR
+		SET    BRD_REG_CNT = nvl(BRD_REG_CNT, 0) - 1   
+		WHERE BRD_MGRNO = #{brd_mgrno}               
+  </update>      
+   
+</mapper>

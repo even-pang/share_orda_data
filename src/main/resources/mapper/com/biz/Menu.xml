@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="menu">
+  <!--  cache eviction="WEAK" flushInterval="30000" readOnly="true" size="512"></cache  -->
+ 
+  	<select id="header" parameterType="java.util.Map"   resultType="java.util.Map">
+  	   	select /*+ index(A IDX_TB_MENU_01)*/ A.*,
+		       (  SELECT file_realnm 
+		          FROM TB_FILE
+		          WHERE  REL_TBL  = 'TB_MENU'
+		          AND    FILE_GBN = 'NORMAL'
+		          AND    REL_KEY  = to_char(A.menu_no)
+		       ) IMG_NORMAL,
+		       (  SELECT file_realnm 
+		          FROM TB_FILE
+		          WHERE  REL_TBL  = 'TB_MENU'
+		          AND    FILE_GBN = 'CHOOSE'
+		          AND    REL_KEY  = to_char(A.menu_no)
+		       ) IMG_CHOOSE       
+		from   TB_MENU A
+		where  menu_gb = #{menu_gb}
+		and    use_yn  = #{use_yn}
+		and    menu_lvl <![CDATA[ <= ]]> 2 
+		order  by top_menu_no, ord, full_menu_no
+	   
+ 	</select>
+ 
+   	<select id="subMenuInfo" parameterType="java.util.Map"   resultType="java.util.Map">   
+   	
+        select A.*,
+               (  SELECT file_realnm 
+                  FROM TB_FILE
+                  WHERE  REL_TBL  = 'TB_MENU'
+                  AND    FILE_GBN = 'LEFTLOG'
+                  AND    REL_KEY  = to_char(A.menu_no)
+               ) IMG_TITLE
+        from   TB_MENU A
+        where  menu_no in ( select top_menu_no
+                            from tb_menu 
+                            where menu_no = #{menu_no}
+                          )  
+        and    rownum = 1        
+                
+ 	</select>
+
+   	<select id="menuDetail" parameterType="java.util.Map"   resultType="java.util.Map">   
+   	 
+     select A.*,
+             REGEXP_SUBSTR(IMG_SPLIT1, '[^,]+', 1, 1 ) AS IMG_TITLE,
+             REGEXP_SUBSTR(IMG_SPLIT1, '[^,]+', 1, 2 ) AS IMG_TITLE_DES1,
+             REGEXP_SUBSTR(IMG_SPLIT2, '[^,]+', 1, 1 ) AS IMG_LEFTLOGTXT,
+             REGEXP_SUBSTR(IMG_SPLIT2, '[^,]+', 1, 2 ) AS IMG_LEFTLOGTXT_DES1 
+     from (
+	           select A.*,
+	                   (  SELECT max(file_realnm || ',' || DES1) 
+	                      FROM TB_FILE
+	                      WHERE  REL_TBL  = 'TB_MENU'
+	                      AND    FILE_GBN in( 'TITLE', 'LEFTLOG')
+	                      AND    REL_KEY  = to_char(A.menu_no)
+	                   ) IMG_SPLIT1,
+	                   (  SELECT file_realnm || ',' || DES1 
+	                      FROM TB_FILE
+	                      WHERE  REL_TBL  = 'TB_MENU'
+	                      AND    FILE_GBN = 'LEFTLOGTXT'
+	                      AND    REL_KEY  = to_char(A.menu_no)
+	                   ) IMG_SPLIT2 ,
+	                   <![CDATA[ ' > ' ]]> || menu_nm AS menu_title_path                 
+	            from   TB_MENU A
+	         <if test="menu_no   == null "> where  menu_no = -1 </if>
+	         <if test="menu_no   != null "> where  menu_no =  nvl(#{menu_no}, -999)   </if>	   
+         ) A
+         
+ 	</select>
+
+<!--  		            AND    top_menu_no in ( select top_menu_no from tb_menu where menu_no = #{menu_no} )  -->  
+ 
+   	<select id="menuPathDetail" parameterType="java.util.Map"   resultType="java.util.Map">   
+   	
+		  SELECT /*+index(A TB_MENU_PK)*/ A.*,
+		            (  SELECT file_realnm 
+		                      FROM TB_FILE
+		                      WHERE  REL_TBL  = 'TB_MENU'
+		                      AND    FILE_GBN = 'TITLE'
+		                      AND    REL_KEY  = to_char(A.menu_no)
+		            ) IMG_TITLE
+		    FROM (  
+		            SELECT P.*, SYS_CONNECT_BY_PATH ( P.menu_nm, ' <![CDATA[ > ]]> ' ) AS menu_title_path
+		            FROM   TB_MENU P
+		            WHERE  use_yn = 'Y' 
+		            START WITH menu_no in ( select top_menu_no  from tb_menu where menu_no = #{menu_no} )                      
+		            CONNECT BY  P.UP_MENU_NO = prior P.MENU_NO
+		         ) A
+		    WHERE menu_no = #{menu_no}    
+                
+ 	</select>
+    
+   	<select id="menuFirstChild" parameterType="java.util.Map"   resultType="java.util.Map">   
+   	
+		 select *
+		 from (   
+		            select *
+		            from   tb_menu
+		            where  up_menu_no = #{menu_no}
+		            and use_yn = 'Y'
+		            order by ord    
+		      )
+		where  rownum = 1
+                
+ 	</select>
+
+	<select id="topMenuDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT A.*,
+		(SELECT FILE_REALNM
+		FROM
+		(SELECT *
+		FROM TB_FILE B
+		WHERE REL_TBL='TB_MENU'
+		<if test="file_gbn != null">
+			AND FILE_GBN = #{file_gbn}
+		</if>
+		ORDER BY FILE_NO DESC
+		)
+		WHERE REL_KEY = A.MENU_NO
+		AND ROWNUM <![CDATA[ <= ]]> 1
+		) FILE_REALNM
+		FROM TB_MENU A
+		WHERE MENU_NO = (SELECT TOP_MENU_NO FROM TB_MENU WHERE MENU_NO = #{menu_no})
+		AND USE_YN = 'Y'
+	</select>
+
+</mapper>

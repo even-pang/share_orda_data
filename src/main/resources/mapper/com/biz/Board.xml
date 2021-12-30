@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+ 
+  <resultMap type="java.util.Map" id="boardMap">
+     <result property="CTNT" column="CTNT" javaType="String" jdbcType="CLOB"/>
+     <result property="ANS_CTNT" column="ANS_CTNT" javaType="String" jdbcType="CLOB"/>     
+  </resultMap>
+
+   <select id="mainBoardList" parameterType="java.util.Map"   resultMap="boardMap"> 
+     select A.*, B.USER_TYPE,
+                (  select /*+index(B IDX_FILE_01)*/ file_realnm  
+                          from TB_FILE B 
+                          where B.REL_TBL='TB_BOARD' and B.REL_KEY = to_char(A.BRD_NO)
+                          and  rownum <![CDATA[ <= ]]> 1 
+                ) as file_realnm     
+     from ( 	  	 	
+		       SELECT *
+		       FROM (
+			          SELECT  /*+ index_desc(A IDX_BOARD_01)*/ 
+			                A.brd_mgrno, A.brd_no, A.ttl, A.reg_dt, A.CTNT, A.URL_TARGET, A.URL, A.ETC_FIELD1, A.sdt, A.REG_ID
+				      FROM TB_BOARD A  
+				      WHERE DELFLAG_YN  = 'N'
+				      
+				     <if test="notice_yn != null">AND notice_yn = #{notice_yn}</if>
+			
+			         <if test="sdt_yyyy != null"> AND sdt    like #{sdt_yyyy} || '%'  </if>
+			         <if test="reg_yyyy != null"> AND reg_dt like #{reg_yyyy} || '%'  </if>
+			          
+			         <if test="search_cate_cd == 'NOTICE' ">  AND A.CATE_CD in ('NTC001','NTC004') </if>
+			         <if test="search_cate_cd == 'RECRUIT' "> AND A.CATE_CD in ('NTC002','NTC003') </if>
+			
+			         <if test="brd_mgrno   != null"> AND A.brd_mgrno  = #{brd_mgrno} </if>
+			         
+			         <if test="brd_cate_cd   != null and brd_cate_cd != ''"> AND A.cate_cd  = #{brd_cate_cd} </if>
+			         
+			         <if test="site_gb != null and site_gb != '' "> AND  A.SITE_GB like '%' || #{site_gb} || '%'  </if>
+			
+			         <if test="fr_to != null and fr_to != '' "> AND to_char(sysdate, 'yyyymmdd') between sdt and edt </if>	  
+			         
+			         <if test="yyyymm != null"> AND #{yyyymm} ||'01' between substr(sdt, 1, 6) || '01'   and nvl(edt, sdt)  </if>	           
+			         
+			         <if test="use_yn   != null and use_yn != '' "> AND A.use_yn    = #{use_yn} </if>
+				     
+					      <if test="sort_ord   != null"> ORDER BY  ${sort_ord} </if>	      
+					      <if test="sort_ord   == null"> ORDER BY A.NOTICE_YN DESC, A.TOP_REG_NO DESC, A.ALL_REG_NO ASC	 </if>				     
+				     
+			  )	WHERE rownum  <![CDATA[ <= 20 ]]>  	     
+		) A, TB_USER B
+		WHERE A.REG_ID = B.USER_ID(+)  
+		        
+  </select>
+
+ 
+  <select id="boardList" parameterType="java.util.Map"   resultMap="boardMap">  
+     SELECT A.*, B.USER_TYPE,
+            REGEXP_SUBSTR(file_split, '[^,]+', 1, 1 ) AS file_realnm,
+            REGEXP_SUBSTR(file_split, '[^,]+', 1, 2 ) AS file_no           
+     FROM (
+		  	  SELECT A.*,
+		               (  select /*+index(B IDX_FILE_01)*/ file_realnm || ',' || to_char(file_no) 
+		                         from TB_FILE B 
+		                         where B.REL_TBL='TB_BOARD' and B.REL_KEY = A.BRD_NO
+		                         and  rownum <![CDATA[ <= ]]> 1 
+		               ) as file_split                   
+		              <if test="cate_cd   != null"> 
+		               ,
+		               ( select CD_NM
+		                  from  tb_code
+		                  where CD_TYPE = nvl(#{cate_cd}, '-')
+		                  and   COMM_CD = A.CATE_CD
+		                  and  rownum <![CDATA[ <= ]]> 1 
+		               ) as cate_nm
+		               </if>
+		   from (               	
+					  	SELECT A.*
+					  	FROM (  	 
+						  	  	  SELECT A.*, rownum as pagingrow
+						  	  	  FROM (	
+									          SELECT  /*+index(A IDX_BOARD_01)*/ A.*,
+									          (SELECT COUNT(*) FROM TB_BOARD WHERE BRD_MGRNO = #{brd_mgrno} AND DELFLAG_YN = 'N' AND USE_YN = 'Y' AND TOP_REG_NO = A.BRD_NO) REPLY_CNT
+										      FROM TB_BOARD A  
+										      WHERE DELFLAG_YN  = 'N'
+												      
+									 		 <if test="front_yn != null and front_yn == 'Y'"> AND DEPTH = 1 </if>
+									         <if test="sdt_yyyy != null and sdt_yyyy !='' "> AND sdt    like #{sdt_yyyy} || '%'  </if>
+									         <if test="reg_yyyy != null and reg_yyyy !='' "> AND reg_dt like #{reg_yyyy} || '%'  </if>
+									          
+									         <if test="search_cate_cd == 'NOTICE' ">  AND A.CATE_CD = 'NTC001' </if>
+									         <if test="search_cate_cd == 'RECRUIT' "> AND A.CATE_CD in ('NTC002','NTC003') </if>
+									
+									         <if test="brd_mgrno   != null"> AND A.brd_mgrno  = #{brd_mgrno} </if>
+									         
+									         <if test="brd_cate_cd   != null and brd_cate_cd != ''"> AND A.cate_cd  = #{brd_cate_cd} </if>
+									         
+									         <if test="site_gb != null and site_gb != '' "> AND  A.SITE_GB like '%' || #{site_gb} || '%'  </if>
+									
+									         <if test="fr_to != null and fr_to != '' "> AND to_char(sysdate, 'yyyymmdd') between sdt and edt </if>	  
+									         
+									         <if test="yyyymm != null"> AND #{yyyymm} ||'01' between substr(sdt, 1, 6) || '01'   and nvl(edt, sdt)  </if>	           
+									         
+									         <if test="use_yn   != null and use_yn != '' "> AND A.use_yn    = #{use_yn} </if>
+									         <if test="keyword  != null"> 
+									             <if test="keykind == 'all'"   > and (    replace(upper(A.ttl ), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%' 
+									                                              or replace(upper(A.ctnt), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%'    
+									                                            )  
+									             </if>
+									             <if test="keykind == 'ttl'"   > AND replace(upper(A.ttl ), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%'  </if>
+									             <if test="keykind == 'ctnt'"  > AND replace(upper(A.ctnt), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%'  </if>
+									             <if test="keykind == 'reg_nm'"> AND upper(A.reg_nm) like   '%'|| upper(#{keyword}) || '%'  </if>
+									             <if test="keykind == 'etc_field1'"> AND upper(A.etc_field1) like   '%'|| upper(#{keyword}) || '%'  </if>
+									             <if test="keykind == 'etc_field2'"> AND upper(A.etc_field2) like   '%'|| upper(#{keyword}) || '%'  </if>
+									             <if test="keykind == 'etc_field3'"> AND upper(A.etc_field3) like   '%'|| upper(#{keyword}) || '%'  </if>
+									             <if test="keykind == 'etc_field4'"> AND upper(A.etc_field4) like   '%'|| upper(#{keyword}) || '%'  </if>
+									             <if test="keykind == 'year-term'">  AND A.etc_field1 || '-' || A.etc_field2 like '%'|| #{keyword} || '%'  </if>
+									          </if>
+									         
+									          <if test="charge_user_id != null and charge_user_id != '' "> AND   charge_user_id = #{charge_user_id}   </if> 
+									
+										      <if test="sort_ord   != null"> ORDER BY  ${sort_ord} </if>	      
+										      <if test="sort_ord   == null"> ORDER BY A.NOTICE_YN DESC, A.TOP_REG_NO DESC, A.ALL_REG_NO ASC	 </if>
+										) A	
+								 <if test="page_end   != null"> 		
+								  where rownum <![CDATA[ <= ]]> #{page_end}	
+								 </if> 
+						) A
+						<if test="page_start   != null"> 		
+					       where 	pagingrow <![CDATA[ >=  ]]> #{page_start}	
+						</if>	  	   
+			    ) A	   
+		) A, TB_USER B  
+		WHERE  A.REG_ID = B.USER_ID(+)	         
+  </select>     
+    
+ 
+  <select id="boardCount" parameterType="java.util.Map"   resultType="int">      
+	      SELECT /*+index(A IDX_BOARD_01)*/ count(*)
+	      FROM TB_BOARD A        
+	      WHERE DELFLAG_YN  = 'N'
+	     
+	     <if test="front_yn != null and front_yn == 'Y'"> AND DEPTH = 1 </if>
+	     
+	     <if test="notice_yn != null">AND notice_yn = #{notice_yn}</if>
+	     
+         <if test="sdt_yyyy != null and sdt_yyyy !='' "> AND sdt    like #{sdt_yyyy} || '%'  </if>
+         <if test="reg_yyyy != null and reg_yyyy !='' "> AND reg_dt like #{reg_yyyy} || '%'  </if>
+
+          
+         <if test="search_cate_cd == 'NOTICE' ">  AND A.CATE_CD = 'NTC001' </if>
+         <if test="search_cate_cd == 'RECRUIT' "> AND A.CATE_CD in ('NTC002','NTC003') </if>
+
+         <if test="brd_mgrno   != null"> AND A.brd_mgrno  = #{brd_mgrno} </if>
+         
+         <if test="brd_cate_cd   != null and brd_cate_cd != ''"> AND A.cate_cd  = #{brd_cate_cd} </if>
+         
+         <if test="site_gb != null and site_gb != '' "> AND  A.SITE_GB like '%' || #{site_gb} || '%'  </if>
+
+         <if test="fr_to != null and fr_to != '' "> AND to_char(sysdate, 'yyyymmdd') between sdt and edt </if>	  
+         
+         <if test="yyyymm != null"> AND #{yyyymm} ||'01' between substr(sdt, 1, 6) || '01'   and nvl(edt, sdt)  </if>	           
+         
+         <if test="use_yn   != null and use_yn != '' "> AND A.use_yn    = #{use_yn} </if>
+         <if test="keyword  != null"> 
+             <if test="keykind == 'all'"   >and (    replace(upper(A.ttl ), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%' 
+                                                    or replace(upper(A.ctnt), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%'    
+                                                )  
+             </if>         
+             <if test="keykind == 'ttl'"   > AND replace(upper(A.ttl ), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%'  </if>
+             <if test="keykind == 'ctnt'"  > AND replace(upper(A.ctnt), ' ', '')   like   '%'|| replace(upper(#{keyword}), ' ', '') || '%'  </if>
+             <if test="keykind == 'reg_nm'"> AND upper(A.reg_nm) like   '%'|| upper(#{keyword}) || '%'  </if>
+             <if test="keykind == 'etc_field1'"> AND upper(A.etc_field1) like   '%'|| upper(#{keyword}) || '%'  </if>
+             <if test="keykind == 'etc_field2'"> AND upper(A.etc_field2) like   '%'|| upper(#{keyword}) || '%'  </if>
+             <if test="keykind == 'etc_field3'"> AND upper(A.etc_field3) like   '%'|| upper(#{keyword}) || '%'  </if>
+             <if test="keykind == 'etc_field4'"> AND upper(A.etc_field4) like   '%'|| upper(#{keyword}) || '%'  </if>
+             <if test="keykind == 'year-term'">  AND A.etc_field1 || '-' || A.etc_field2 like '%'|| #{keyword} || '%'  </if>
+          </if>
+	      
+	    <if test="charge_user_id != null and charge_user_id != '' "> AND   charge_user_id = #{charge_user_id}   </if>  
+	      
+   </select>   
+ 
+  <select id="boardNextValue" parameterType="java.util.Map"   resultType="int">
+	      SELECT SEQ_TB_BOARD.nextval
+	      FROM DUAL
+  </select>
+
+  <select id="boardDetail"  parameterType="java.util.Map"   resultMap="boardMap">  	  	 
+          SELECT  A.*  ,  B.USER_TYPE,
+                 ( select max(C.cd_nm) 
+                   from tb_boardmgr B, tb_code C 
+                   where A.brd_mgrno = B.brd_mgrno
+                   and   C.cd_type = B.cate_cd
+                   and   A.cate_cd = C.comm_Cd
+                 ) as cate_cd_nm
+	      FROM TB_BOARD A, TB_USER B 
+	      WHERE BRD_NO = #{brd_no, jdbcType=INTEGER}
+	      AND   A.REG_ID = B.USER_ID(+)       
+  </select>  
+  
+  <select id="boardDetailList"  parameterType="java.util.Map"   resultMap="boardMap">  	  	 
+          SELECT  A.*  ,  B.USER_TYPE,
+                 ( select max(C.cd_nm) 
+                   from tb_boardmgr B, tb_code C 
+                   where A.brd_mgrno = B.brd_mgrno
+                   and   C.cd_type = B.cate_cd
+                   and   A.cate_cd = C.comm_Cd
+                 ) as cate_cd_nm
+	      FROM TB_BOARD A, TB_USER B 
+	      WHERE TOP_REG_NO = #{brd_no, jdbcType=INTEGER}
+	      AND   A.REG_ID = B.USER_ID(+)
+	      ORDER BY DEPTH
+  </select>
+
+ <select id="isSecretCheck" parameterType="java.util.Map"   resultType="int">      
+		select count(*)
+		from tb_board
+		where DELFLAG_YN = 'N'
+		and   SECRET_YN  = 'Y' 
+		and   ( REG_ID     = #{reg_id, jdbcType=VARCHAR}  or USER_GPIN = #{user_gpin, jdbcType=VARCHAR}  or pwd_c = CRYPTO.enc('normal',#{reg_pwd, jdbcType=VARCHAR}) )
+		and   (BRD_MGRNO, TOP_REG_NO )in (
+		            select BRD_MGRNO, TOP_REG_NO
+		            from tb_board
+		            where BRD_NO     = #{brd_no, jdbcType=INTEGER} 
+		            and   DELFLAG_YN = 'N'
+		      )
+  </select>
+  
+ <select id="isChildCount" parameterType="java.util.Map"   resultType="int">      
+		select count(*) 
+		from tb_board
+		where high_reg_no = #{brd_no, jdbcType=INTEGER} 
+		and   delflag_yn  = 'N'
+		and   use_yn      = 'Y' 
+  </select>
+
+  
+  <update id="boardAddViewCntUpdate" parameterType="java.util.Map" >  	 
+	      UPDATE  TB_BOARD 
+	      SET     view_cnt = nvl(view_cnt, 0) + 1 
+	      WHERE BRD_NO = #{brd_no, jdbcType=INTEGER}     
+  </update>   
+  
+  <update id="boardProcUpdate" parameterType="java.util.Map" >  	 
+		 UPDATE tb_board
+	     SET    cate_cd =  #{cate_cd   , jdbcType=VARCHAR}
+		 WHERE  brd_no in ( 
+			                      SELECT high_reg_no
+			                      FROM tb_board
+			                      WHERE BRD_NO = #{brd_no, jdbcType=INTEGER}
+			                  ) 
+  </update>   
+
+
+  <insert  id="boardInsert" parameterType="java.util.Map"  >
+<![CDATA[
+		INSERT INTO TB_BOARD
+		(
+           BRD_NO      ,
+           BRD_KIND    ,
+           CATE_CD     ,
+           NOTICE_YN   ,
+           USE_YN      ,
+           TTL         ,
+           CTNT        ,
+           ANS_CTNT    ,
+           HIGH_REG_NO ,
+           DEPTH       ,
+           ALL_REG_NO  ,
+           TOP_REG_NO  ,
+           VIEW_CNT    ,
+           REG_ID      ,
+           REG_NM      ,
+           REG_DT      ,
+           REG_PWD     ,
+           SDT         ,
+           EDT         ,
+           USER_GPIN   ,
+           URL         ,
+           URL_TARGET  ,
+           BRD_MGRNO   ,
+           SECRET_YN   ,
+           SITE_GB     ,
+           ZIP_CD      ,
+           ADDR1       ,
+           ADDR2       ,
+           PHONE_NO    ,
+           EMAIL       ,
+           WIN_HEIGHT  ,
+           WIN_WIDTH   ,
+           ETC_FIELD1  ,
+           ETC_FIELD2  ,
+           ETC_FIELD3  ,
+           ETC_FIELD4  ,
+           DELFLAG_YN  ,
+           ORD  
+  		) VALUES (
+			    #{brd_no      , jdbcType=INTEGER} ,
+			    #{brd_kind    , jdbcType=VARCHAR} ,
+			    #{cate_cd     , jdbcType=VARCHAR} ,
+			nvl(#{notice_yn   , jdbcType=VARCHAR} , 'N'),
+			nvl(#{use_yn      , jdbcType=VARCHAR} , 'Y'),
+			    #{ttl         , jdbcType=VARCHAR} ,
+		    	#{ctnt        , javaType=String, jdbcType=CLOB} ,
+		    	#{ans_ctnt    , javaType=String, jdbcType=CLOB} ,
+			    #{high_reg_no , jdbcType=VARCHAR} ,
+			    #{depth       , jdbcType=VARCHAR} ,
+			    #{all_reg_no  , jdbcType=VARCHAR} ,
+			    #{top_reg_no  , jdbcType=VARCHAR} ,
+			    0                                 ,
+			    #{reg_id      , jdbcType=VARCHAR} ,
+			    #{reg_nm      , jdbcType=VARCHAR} ,
+			nvl(#{reg_dt      , jdbcType=VARCHAR} , to_char(sysdate, 'yyyymmddhh24miss')),
+			    #{reg_pwd     , jdbcType=VARCHAR} ,
+        replace(#{sdt         , jdbcType=VARCHAR} , '-', '') ,
+	    replace(#{edt         , jdbcType=VARCHAR} , '-', '') ,
+			    #{user_gpin   , jdbcType=VARCHAR} ,
+			    #{url         , jdbcType=VARCHAR} ,
+			    #{url_target  , jdbcType=VARCHAR} ,
+			    #{brd_mgrno   , jdbcType=INTEGER} ,
+			    #{secret_yn   , jdbcType=VARCHAR} ,
+			    #{site_gb     , jdbcType=VARCHAR} ,
+			    #{zip_cd      , jdbcType=VARCHAR} ,
+			    #{addr1       , jdbcType=VARCHAR} ,
+			    #{addr2       , jdbcType=VARCHAR} ,
+			    #{phone_no    , jdbcType=VARCHAR} ,
+			    #{email       , jdbcType=VARCHAR} ,
+			    #{win_height  , jdbcType=INTEGER} ,
+			    #{win_width   , jdbcType=INTEGER} ,
+                #{etc_field1  , jdbcType=VARCHAR} ,			    
+                #{etc_field2  , jdbcType=VARCHAR} ,
+                #{etc_field3  , jdbcType=VARCHAR} ,
+                #{etc_field4  , jdbcType=VARCHAR} ,
+			    'N' ,
+			    #{ord         , jdbcType=INTEGER}  
+  		)
+]]>  		
+  </insert>   
+  
+ 
+  <update id="boardUpdate" parameterType="java.util.Map" >
+  <![CDATA[  
+		UPDATE TB_BOARD
+        SET    BRD_KIND    =  		    #{brd_kind    , jdbcType=VARCHAR} ,               
+	           CATE_CD     =  		    #{cate_cd     , jdbcType=VARCHAR} ,               
+	           NOTICE_YN   =  		nvl(#{notice_yn   , jdbcType=VARCHAR} , notice_yn),              
+	           USE_YN      =  		nvl(#{use_yn      , jdbcType=VARCHAR} , 'Y'),         
+	           TTL         =  		    #{ttl         , jdbcType=VARCHAR} ,               
+	           CTNT        =  	    	#{ctnt        , javaType=String   , jdbcType=CLOB} ,
+	           ANS_CTNT    =  	    	#{ans_ctnt    , javaType=String   , jdbcType=CLOB} , 
+	           REG_NM      =  		nvl(#{reg_nm      , jdbcType=VARCHAR} , reg_nm),               
+	           REG_DT      =  		nvl(#{reg_dt      , jdbcType=VARCHAR} , reg_dt),      
+	           MOD_DT      =  		    to_char(sysdate, 'yyyymmddhh24miss') ,               
+	           REG_PWD     =  		    #{reg_pwd     , jdbcType=VARCHAR} ,               
+	           SDT         =    replace(#{sdt         , jdbcType=VARCHAR} , '-', '') ,   
+	           EDT         =    replace(#{edt         , jdbcType=VARCHAR} , '-', '') ,
+	           URL         = 	        #{url         , jdbcType=VARCHAR} ,
+	           URL_TARGET  = 	        #{url_target  , jdbcType=VARCHAR} ,
+	           SITE_GB     = 	        #{site_gb     , jdbcType=VARCHAR} ,                  
+	           BRD_MGRNO   = 	        #{brd_mgrno   , jdbcType=INTEGER} ,               
+	           SECRET_YN   = 	        #{secret_yn   , jdbcType=VARCHAR} ,               
+	           ZIP_CD      = 	        #{zip_cd      , jdbcType=VARCHAR} ,               
+	           ADDR1       = 	        #{addr1       , jdbcType=VARCHAR} ,               
+	           ADDR2       = 	        #{addr2       , jdbcType=VARCHAR} ,               
+	           PHONE_NO    = 	        #{phone_no    , jdbcType=VARCHAR} ,    
+	           ETC_FIELD1  =            #{etc_field1  , jdbcType=VARCHAR} ,
+               ETC_FIELD2  =            #{etc_field2  , jdbcType=VARCHAR} ,
+               ETC_FIELD3  =            #{etc_field3  , jdbcType=VARCHAR} ,
+               ETC_FIELD4  =            #{etc_field4  , jdbcType=VARCHAR} ,
+	           EMAIL       = 	        #{email       , jdbcType=VARCHAR} ,
+
+               charge_user_id =     nvl(#{charge_user_id , jdbcType=VARCHAR}, charge_user_id),
+	           
+	           ORD         =		nvl(#{ord         , jdbcType=INTEGER} , ord),
+	           WIN_HEIGHT  =		    #{win_height  , jdbcType=INTEGER} ,
+			   WIN_WIDTH   =            #{win_width   , jdbcType=INTEGER}                 
+        WHERE BRD_NO = #{brd_no}
+        
+
+        
+        
+          
+       ]]>      
+  </update>     
+  
+  <update id="boardUserUpdate" parameterType="java.util.Map" >
+  <![CDATA[
+		UPDATE TB_BOARD
+        SET    BRD_KIND    =  		    #{brd_kind    , jdbcType=VARCHAR} ,               
+	           CATE_CD     =  		nvl(#{cate_cd     , jdbcType=VARCHAR} , CATE_CD ),              
+	           NOTICE_YN   =  		nvl(#{notice_yn   , jdbcType=VARCHAR} , notice_yn),                      
+	           TTL         =  		    #{ttl         , jdbcType=VARCHAR} ,               
+	           CTNT        =  	    	#{ctnt        , javaType=String   , jdbcType=CLOB} ,
+	           REG_NM      =  		nvl(#{reg_nm      , jdbcType=VARCHAR} , reg_nm),               
+	           REG_DT      =  		nvl(#{reg_dt      , jdbcType=VARCHAR} , reg_dt),      
+	           MOD_DT      =  		    to_char(sysdate, 'yyyymmddhh24miss') ,               
+	           REG_PWD     =  		    #{reg_pwd     , jdbcType=VARCHAR} ,               
+	           SDT         =    replace(#{sdt         , jdbcType=VARCHAR} , '-', '') ,   
+	           EDT         =    replace(#{edt         , jdbcType=VARCHAR} , '-', '') ,   
+	           URL         = 	        #{url         , jdbcType=VARCHAR} ,
+	           URL_TARGET  = 	        #{url_target  , jdbcType=VARCHAR} ,	                          
+	           BRD_MGRNO   = 	        #{brd_mgrno   , jdbcType=INTEGER} ,               
+	           SECRET_YN   = 	        #{secret_yn   , jdbcType=VARCHAR} ,               
+	           ZIP_CD      = 	        #{zip_cd      , jdbcType=VARCHAR} ,               
+	           ADDR1       = 	        #{addr1       , jdbcType=VARCHAR} ,               
+	           ADDR2       = 	        #{addr2       , jdbcType=VARCHAR} ,               
+	           PHONE_NO    = 	        #{phone_no    , jdbcType=VARCHAR} ,    
+	           ETC_FIELD1  =            #{etc_field1  , jdbcType=VARCHAR} ,
+               ETC_FIELD2  =            #{etc_field2  , jdbcType=VARCHAR} ,
+               ETC_FIELD3  =            #{etc_field3  , jdbcType=VARCHAR} ,
+               ETC_FIELD4  =            #{etc_field4  , jdbcType=VARCHAR} ,
+	           EMAIL       = 	        #{email       , jdbcType=VARCHAR} ,
+	           WIN_HEIGHT  =		    #{win_height  , jdbcType=INTEGER} ,
+			   WIN_WIDTH   =            #{win_width   , jdbcType=INTEGER}                 
+        WHERE BRD_NO = #{brd_no} 
+        AND   ( REG_ID = #{reg_id}  or USER_GPIN = #{user_gpin} )     
+       ]]>                 
+  </update>       
+  
+  
+ <update id="boardDelflagUpdate" parameterType="java.util.Map" >
+		UPDATE TB_BOARD
+        SET    DELFLAG_YN  = 'Y',               
+	           MOD_DT      =  to_char(sysdate, 'yyyymmddhh24miss')                                 
+        WHERE BRD_NO = #{brd_no}       
+  </update>       
+ 
+  <delete id="boardDelete" parameterType="java.util.Map" >
+		DELETE FROM TB_BOARD   
+		WHERE BRD_NO = #{brd_no}               
+  </delete>   
+
+
+  <delete id="boardMgrDelete" parameterType="java.util.Map" >
+		DELETE FROM TB_BOARD   
+		WHERE brd_mgrno = #{brd_mgrno}               
+  </delete>   
+
+  <delete id="boardUserDelete" parameterType="java.util.Map" >
+		DELETE FROM TB_BOARD   
+		WHERE BRD_NO = #{brd_no}
+		AND   REG_ID = #{reg_id}               
+  </delete>  
+
+
+<delete id="boardUserGpinDelete" parameterType="java.util.Map" >
+		DELETE FROM TB_BOARD   
+		WHERE BRD_NO = #{brd_no}
+		AND   USER_GPIN = #{user_gpin}               
+  </delete>
+
+  <select id="boardNextProvList" parameterType="java.util.Map"   resultMap="boardMap"> 
+     
+			SELECT *
+			FROM (          
+			         SELECT *
+			         FROM 
+			             (     
+			                  SELECT 1 as dkind, ttl, brd_no, 'Y' as isdata
+			                  FROM (
+			                          SELECT ttl, brd_no
+			                          FROM   TB_BOARD A
+								      WHERE    brd_no <![CDATA[ < ]]>  #{brd_no}  
+								      AND   DELFLAG_YN  = 'N'
+	 
+							         <if test="brd_mgrno   != null"> AND A.brd_mgrno  = #{brd_mgrno} </if>
+							         
+							         <if test="use_yn   != null"> AND A.use_yn    = #{use_yn} </if>
+							         <if test="keyword  != null"> 
+							             <if test="keykind == 'ttl'"   > AND A.ttl    like   '%'|| #{keyword} || '%'  </if>
+							             <if test="keykind == 'ctnt'"  > AND A.ctnt   like   '%'|| #{keyword} || '%'  </if>
+							             <if test="keykind == 'reg_nm'"> AND A.reg_nm like   '%'|| #{keyword} || '%'  </if>
+							          </if>
+	  
+			                          order by A.NOTICE_YN DESC, A.TOP_REG_NO DESC, A.ALL_REG_NO ASC
+			                       )
+			                  WHERE        <![CDATA[  rownum <= 1  ]]>  
+			                  UNION ALL
+			                  SELECT 1 as dkind, '이전글이 없습니다.' as ttl, -1, 'N' as isdata FROM DUAL
+			              ) WHERE    <![CDATA[ rownum  <= 1  ]]>  
+			         UNION ALL
+			         SELECT *
+			         FROM 
+			             (     
+			                  SELECT 2 as dkind, ttl, brd_no, 'Y' as isdata
+			                  FROM (
+			                          SELECT ttl, brd_no
+			                          FROM   TB_BOARD A
+								      WHERE brd_no  <![CDATA[   >  ]]>  #{brd_no} 
+								      AND   DELFLAG_YN  = 'N'
+						             
+						             <if test="brd_mgrno   != null"> AND A.brd_mgrno  = #{brd_mgrno} </if>
+							         
+							         <if test="use_yn   != null"> AND A.use_yn    = #{use_yn} </if>
+							         <if test="keyword  != null"> 
+							             <if test="keykind == 'ttl'"   > AND A.ttl    like   '%'|| #{keyword} || '%'  </if>
+							             <if test="keykind == 'ctnt'"  > AND A.ctnt   like   '%'|| #{keyword} || '%'  </if>
+							             <if test="keykind == 'reg_nm'"> AND A.reg_nm like   '%'|| #{keyword} || '%'  </if>
+							          </if>
+		                          
+			                          order by A.NOTICE_YN DESC, A.TOP_REG_NO DESC, A.ALL_REG_NO ASC
+			                       )
+			                  WHERE    <![CDATA[ rownum  <= 1  ]]> 
+			                  UNION ALL
+			                  SELECT 2 as dkind, '다음글이 없습니다.' as ttl, -1, 'N' as isdata FROM DUAL
+			              ) WHERE  <![CDATA[ rownum  <= 1 ]]>
+			      )
+			ORDER BY DKIND   
+       			
+   </select>
+     
+</mapper>

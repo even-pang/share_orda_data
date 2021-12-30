@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="data">
+    <select id="ordaDataCoinList" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from (
+        select coin_name,
+               max(COIN_KINDS) as COIN_KINDS,
+        <choose>
+            <when test='group == "3"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 3) * 3, 2, '0') START_DATE
+            </when>
+            <when test='group == "5"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 5) * 5, 2, '0') START_DATE
+            </when>
+            <when test="group == '10'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 10) * 10, 2, '0') START_DATE
+            </when>
+            <when test="group == '15'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 15) * 15, 2, '0') START_DATE
+            </when>
+            <when test="group == '30'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 30) * 30, 2, '0') START_DATE
+            </when>
+            <when test="group == '60'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 60) * 60, 2, '0') START_DATE
+            </when>
+            <when test="group == '240'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss'), 'MM.DD HH24:MISS'), 1, 6) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss'),'MM.DD HH24:MISS'), 7, 2) / 4) * 4, 2, '0') START_DATE
+            </when>
+            <when test='group == "day"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 5) START_DATE
+            </when>
+            <when test='group == "week"'>
+                TO_CHAR(min(to_date(start_date, 'YYYY-MM-DD hh24:mi:ss') + 9/24), 'YYYY-MM-DD') START_DATE,
+                to_char(to_date(start_date, 'YYYY-MM-DD hh24:mi:ss') + 9/24,'IW')
+            </when>
+            <otherwise>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 2) START_DATE
+            </otherwise>
+        </choose>
+        ,SUM(BUY_LIQUIDITY) as BUY_LIQUIDITY
+        ,SUM(BUY_COUNT) as BUY_COUNT
+        ,SUM(BUY_QUANTITY) as BUY_QUANTITY
+        ,SUM(BUY_PR) as BUY_PR
+        ,SUM(SELL_LIQUIDITY) as SELL_LIQUIDITY
+        ,SUM(SELL_COUNT) as SELL_COUNT
+        ,SUM(SELL_QUANTITY) as SELL_QUANTITY
+        ,SUM(SELL_PR) as SELL_PR
+        ,COUNT(*) as COUNT
+        from ${table}
+        where coin_name=#{coin_name}
+        GROUP BY coin_name,
+        <choose>
+            <when test='group == "3"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 3) * 3, 2, '0')
+            </when>
+            <when test='group == "5"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 5) * 5, 2, '0')
+            </when>
+            <when test="group == '10'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 10) * 10, 2, '0')
+            </when>
+            <when test="group == '15'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 15) * 15, 2, '0')
+            </when>
+            <when test="group == '30'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 30) * 30, 2, '0')
+            </when>
+            <when test="group == '60'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 60) * 60, 2, '0')
+            </when>
+            <when test="group == '240'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss'), 'MM.DD HH24:MISS'), 1, 6) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss'),'MM.DD HH24:MISS'), 7, 2) / 4) * 4, 2, '0')
+            </when>
+            <when test='group == "day"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 5)
+            </when>
+            <when test='group == "week"'>
+                to_char(to_date(start_date, 'YYYY-MM-DD hh24:mi:ss') + 9/24,'IW')
+            </when>
+            <otherwise>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 2)
+            </otherwise>
+        </choose>
+        order by START_DATE desc)
+        where rownum <![CDATA[<=]]> 30
+        <if test="scroll_date != null">
+            AND START_DATE <![CDATA[<]]> #{scroll_date}
+        </if>
+    </select>
+
+    <select id="ordaDataCoinOneList" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from (
+        select coin_name,
+               BUY_LIQUIDITY,
+               COIN_KINDS,
+               BUY_COUNT,
+               BUY_QUANTITY,
+               BUY_PR,
+               SELL_LIQUIDITY,
+               SELL_COUNT,
+               SELL_QUANTITY,
+               SELL_PR,
+               to_char(to_date(START_DATE, 'yyyy-mm-dd hh24:mi:ss')+9/24, 'mm.dd hh24:mi') START_DATE
+        from ${table}
+        where coin_name = #{coin_name}
+        <if test="scroll_date != null">
+            AND to_char(to_date(START_DATE, 'yyyy-mm-dd hh24:mi:ss')+9/24, 'mm.dd hh24:mi') <![CDATA[<]]> #{scroll_date}
+        </if>
+        order by START_DATE desc)
+        where rownum <![CDATA[<=]]> 30
+    </select>
+
+    <select id="ordaDataKindList" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        DENSE_RANK() OVER (order by sum(buy_pr) + sum(sell_pr) desc) RANK,
+               COIN_NAME,
+                max(COIN_KINDS) as COIN_KINDS,
+                max(COIN_KR_NAME) as COIN_KR_NAME,
+        <choose>
+            <when test='group == "3"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 3) * 3, 2, '0') START_DATE
+            </when>
+            <when test='group == "5"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 5) * 5, 2, '0') START_DATE
+            </when>
+            <when test="group == '10'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 10) * 10, 2, '0') START_DATE
+            </when>
+            <when test="group == '15'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 15) * 15, 2, '0') START_DATE
+            </when>
+            <when test="group == '30'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 30) * 30, 2, '0') START_DATE
+            </when>
+            <when test="group == '60'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 60) * 60, 2, '0') START_DATE
+            </when>
+            <when test="group == '240'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss'), 'MM.DD HH24:MISS'), 1, 6) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss'),'MM.DD HH24:MISS'), 7, 2) / 4) * 4, 2, '0') START_DATE
+            </when>
+            <when test='group == "day"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 5) START_DATE
+            </when>
+            <when test='group == "week"'>
+                TO_CHAR(min(to_date(start_date, 'YYYY-MM-DD hh24:mi:ss') + 9/24), 'YYYY-MM-DD') START_DATE,
+                to_char(to_date(start_date, 'YYYY-MM-DD hh24:mi:ss') + 9/24,'IW')
+            </when>
+            <otherwise>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 2) START_DATE
+            </otherwise>
+        </choose>
+        ,SUM(BUY_LIQUIDITY) as BUY_LIQUIDITY
+        ,SUM(BUY_COUNT) as BUY_COUNT
+        ,SUM(BUY_QUANTITY) as BUY_QUANTITY
+        ,SUM(BUY_PR) as BUY_PR
+        ,SUM(SELL_LIQUIDITY) as SELL_LIQUIDITY
+        ,SUM(SELL_COUNT) as SELL_COUNT
+        ,SUM(SELL_QUANTITY) as SELL_QUANTITY
+        ,SUM(SELL_PR) as SELL_PR
+        ,COUNT(*) as COUNT
+        from ${table}
+        where 1=1 and START_DATE  <![CDATA[>]]>=#{STARTDATE}
+        GROUP BY coin_name,
+        <choose>
+            <when test='group == "3"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 3) * 3, 2, '0')
+            </when>
+            <when test='group == "5"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 5) * 5, 2, '0')
+            </when>
+            <when test="group == '10'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 10) * 10, 2, '0')
+            </when>
+            <when test="group == '15'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 15) * 15, 2, '0')
+            </when>
+            <when test="group == '30'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 30) * 30, 2, '0')
+            </when>
+            <when test="group == '60'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 9) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss')+ 9/24,'MM.DD HH24:MISS'), 10, 2) / 60) * 60, 2, '0')
+            </when>
+            <when test="group == '240'">
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss'), 'MM.DD HH24:MISS'), 1, 6) ||
+                LPAD(FLOOR(SUBSTR(TO_CHAR(to_date(START_DATE,'yyyy-mm-dd hh24:mi:ss'),'MM.DD HH24:MISS'), 7, 2) / 4) * 4, 2, '0')
+            </when>
+            <when test='group == "day"'>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 5)
+            </when>
+            <when test='group == "week"'>
+                to_char(to_date(start_date, 'YYYY-MM-DD hh24:mi:ss') + 9/24,'IW')
+            </when>
+            <otherwise>
+                SUBSTR(to_char(to_date(START_DATE,'YYYY-MM-DD hh24:mi:ss')+ 9/24, 'MM.DD HH24:MISS'), 1, 2)
+            </otherwise>
+        </choose>
+        order by START_DATE desc
+    </select>
+
+
+
+
+</mapper>

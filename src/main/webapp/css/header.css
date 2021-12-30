@@ -1,0 +1,1395 @@
+@charset "UTF-8";
+
+*{
+    box-sizing: border-box;
+	font-family: 'Noto Sans KR', sans-serif;    
+	font-weight: 300;
+    margin: 0; padding: 0;
+    list-style: none;
+    text-decoration: none;
+    outline:none;
+    color: #333;
+}
+.clear{
+    clear: both;
+}
+body{
+    min-width: 1900px;
+}
+#wrap{
+    width: 1600px;
+    margin: 0 auto;
+    min-width: 1600px;
+}
+.floatRight{
+	float: right;
+}
+/*****************************************************************************************************/
+
+
+#section{
+    float: right;
+    height: 20px;
+    padding-top: 50px;
+    width: 84%;
+}
+/**************************************************************************************************** btn css*/
+.btn{
+    border-radius: 5px;
+    background-color: rgb(28, 28, 28);
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s background-color;
+}
+.btn:hover{
+    background-color: rgb(154, 2, 0);
+}
+
+.btn2{
+	cursor: pointer;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.btn2:hover{
+	color: #f2685b;
+    border: 1px solid #f2685b;
+}
+/****************************************************************************************************************** header */
+
+#logo{
+    margin: 25px 0 10px;
+    height: 75px;
+}
+#logo h1{
+    font-size: 55px;
+    margin-left: 20px;
+    color: #2730ad;
+    font-weight: normal;
+    width: 300px;
+}
+#top{
+	display: flex;
+	margin-top: 50px;
+}
+#top #logo{
+	flex: 1;
+}
+#top #headerTitle{
+	flex: 3;
+}
+#top #headerTitle h1{
+	text-align: center;
+	font-weight: 700;
+	color: rgb(51, 51, 51);;
+   	font-size: 40px;
+}
+#top #headerSubMenu{
+	flex: 1;
+	text-align: right;
+}
+#headerSubMenu ul li{
+	display: inline-block;
+	margin-left: 15px;
+	font-weight: bold;
+	font-size: 14px;
+}
+#headerSubMenu ul li button{
+	background-color: transparent;
+	padding: 5px;
+	color: rgb(131, 143, 159);
+	border: 1px solid rgb(203, 213, 229);
+	border-radius: 3px;
+	font-weight: bold;
+}
+#headerSubMenu ul li button i{
+	color: rgb(131, 143, 159);
+}
+
+
+#mainMenu {
+    border-top: 1px solid rgb(232, 232, 232);
+    border-bottom: 1px solid rgb(232, 232, 232);
+    height: 65px;
+    background-color: rgb(250, 250, 250);
+    overflow: hidden;
+}
+
+#mainMenu ul{
+	text-align: center;
+	margin-bottom: 50px;
+}
+#mainMenu ul li{
+	display: inline-block;
+}
+#mainMenu ul li a {
+	display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 400;
+    transition: 0.3s color;
+    width: 150px;
+    font-size: 18px;
+    color: rgb(128, 128, 128);
+    padding: 0px 15px;
+    margin: 9px 15px;
+    line-height: 45px;
+}
+.mainOn{ 
+    color: white !important;
+    background-color: rgb(68, 131, 197);
+    border-radius: 10px;
+}
+
+.mainOn a{color: white !important;}
+
+/* 서브메뉴 */
+
+#subMenu{
+    width: 13%;
+    float: left;
+}
+#mainWithdrawalCount {
+    background: white;
+    width: 10px;
+    padding: 0px 5px;
+    border: 1px solid;
+    border-radius: 52px;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-left: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    vertical-align: 1px;
+}
+#subMenu>ul{
+    border: 1px solid rgb(223, 223, 223);
+    margin-top: 50px;
+    padding: 5px 0;
+} 
+
+#subMenu>ul>li, .subsubmenu a{
+    cursor: pointer;
+    color: rgb(128, 128, 128);
+    font-size: 15px;    
+    font-weight: 400;
+    padding: 15px 25px;
+}
+#subMenu>ul>li a:hover, .subsubmenu a:hover{
+    color: rgb(68, 131, 197) !important;
+}
+#subMenu>ul>li a:hover span{
+    color: rgb(68, 131, 197) !important;
+}
+#subMenu .slidePM{
+	float: right;
+	color: rgb(128, 128, 128);
+}
+.subOn a, .subOn span{
+    color: rgb(68, 131, 197) !important;
+}
+
+/* 서브서브 */
+
+.hide{
+	display:none;
+}
+.slideOn{
+	padding-bottom: 0px !important;
+    color: rgb(68, 131, 197) !important;
+}
+.subsubmenu{
+	margin-top: 10px;
+}
+.subsubmenu li{
+    font-size: 13px !important;    
+    padding: 15px 0 !important;
+}
+
+
+/*****************************************************************************************************/
+
+/*searchDiv*/
+
+#searchDiv{
+    background-color: rgb(241, 241, 241);
+    padding: 20px 50px;
+    margin-bottom: 25px;
+    border-radius: 3px;
+    font-weight: 400;
+}
+
+#schInnerDiv{
+	background-color: white;
+	border: 1px solid rgb(223, 223, 223);
+	/* padding: 7px 20px; */
+	height: 50px;
+	padding: 0 20px;
+	line-height: 50px;
+}
+
+.boardDiv select{
+	display: inline-block;
+    border: none;
+    padding: 5px;
+    width: 125px;
+    border-radius: 3px;
+    color: rgb(102, 102, 102);
+    font-size: 15px;
+    font-weight: 400;
+}
+.schSpan{
+	color: rgb(102, 102, 102); 
+	font-size: 15px; 
+	font-weight: 500; 
+	padding-right: 15px;
+}
+.fa-calendar-alt{
+	color: rgb(102, 102, 102);
+	font-size: 17px;
+    padding-right: 15px;
+}
+.fa-search{
+	font-size: 20px;
+}
+.searchField{
+    display: inline-block;
+    background-color: white;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    width: 114px;
+    font-size: 15px;
+    font-weight: 400;
+    color: rgb(102, 102, 102); 
+}
+
+#searchField{
+    width: 320px;  
+    border: none;
+}
+#searchField::placeholder{
+	color: rgb(153, 153, 153);
+}
+#schBtn{
+    cursor: pointer;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    outline: none;
+    border: none;
+    background-color: white;
+}
+.searchDivBorder{
+	color: rgb(223, 223, 223);
+	padding: 0px 15px;
+}
+
+
+/*****************************************************************************************************/
+
+/* btn */
+
+.logoutBtn{
+	cursor: pointer;
+}
+.btn3{
+    cursor: pointer;
+    padding: 10px 30px;
+    background-color: rgb(85, 85, 85);
+    border: none;
+    color: white;
+    font-size: 15px;
+    transition: 0.3s all;
+}
+
+.rightBtn{
+	float: right;
+	margin-right: 22px;
+}
+#excelDownBtn{
+	color: rgb(37, 91, 167);
+	border: 1px solid rgb(37, 91, 167);
+	background-color: white;
+	padding: 10px;
+	font-weight: 400;
+	border-radius: 0px;
+}
+#excelDownBtn i{
+	color: rgb(37, 91, 167);
+}
+#eventPointBtn {
+	background-color: white;
+    color: rgb(255, 17, 21);
+    border: 1px solid #f2685b;
+    padding: 5px;
+    margin-top: 7px;
+    display: inline-block;
+    float: right;
+}
+#excelDownBtn{
+	margin-left: 15px !important;
+}
+
+/* #eventPointBtn:hover, #excelDownBtn:hover{
+    background-color: rgb(207, 28, 31);
+    color: white;
+    border: 1px solid rgb(207, 28, 31);
+}
+ */
+
+.adminConfigBtn{
+	background-color: rgb(223, 223, 223);
+	border: none;
+	border-radius: 3px;
+	padding: 5px 13px;
+	outline: none;
+	cursor: pointer;
+	font-weight: 400;
+}
+
+
+
+
+
+
+
+
+/**************************************************************************************************** btn css*/
+/* 테이블 */
+
+#listTbl{
+    width:100%;
+    margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-top: 2px solid rgb(38, 92, 167);
+}
+#listTbl th{
+    text-align: center;
+    font-size: 15px;
+    background-color: rgb(243, 247, 251);
+    border-top: 2px solid rgb(170, 170, 170);
+    font-weight: 500;
+}
+#listTbl tr{
+    border-bottom: 1px solid rgb(234, 234, 234);
+}
+
+
+#listTbl th, #listTbl td{
+    padding: 15px;
+    vertical-align: middle;
+}
+#listTbl td{
+    font-size: 14px;
+    color: #444;
+    line-height: 20px;
+}
+#listTbl thead tr{
+    background-color: rgb(240, 240, 240);
+    border-bottom: 1px solid #ccc;
+}
+
+#boardAddBtn{
+    padding: 10px 20px;
+    margin: 30px;
+}
+
+/* 페이징 */
+#listPage {
+    text-align: center;
+    margin-top: 50px;
+    font-weight: 400;
+}
+
+#listPage li {
+    display: inline-block;
+    width: 35px;
+    line-height: 32px;
+    border-radius: 35px;
+    text-align: center;
+    height: 35px;
+    border: none;
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+#listPage li a {
+    display: inline-block;
+    width: 100%;
+}
+
+#listPageDiv{
+    margin-bottom: 200px;
+}
+.pageOn{
+	background-color: rgb(38, 92, 167);
+}
+.pageOn a{color: white;}
+.pageBA{
+	border: 1px solid rgb(224, 224, 224) !important;
+	background-color: rgb(250, 250, 250);
+	color: rgb(137, 147, 162);
+}
+
+
+/* board_config.css */
+
+.configTbl td{
+    text-align: left;
+    border-top: 1px solid rgb(234, 234, 234);
+    border-right: 1px solid rgb(234, 234, 234);
+}
+.configTbl input[type="text"]{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    padding: 0 10px;
+}
+.configTbl input[type="text"]:focus{
+    border-bottom: 1px solid #aaa;
+}
+.configTbl input[type="password"]{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    padding: 0 10px;
+}
+.configTbl input[type="password"]:focus{
+    border-bottom: 1px solid #aaa;
+}
+.configTbl select{
+    border: 1px solid #ccc;
+    color: #444;
+    width: 140px;
+    height: 30px;
+    padding: 5px;
+}
+.configTbl input[type="radio"]{
+    position: relative;
+    top: 1.5px;
+    margin: 0 3px 0 10px;
+}
+.configTbl label{
+    position: relative;
+    top: -1.5px;
+}
+.centerText{
+    text-align: center;
+}
+.configTbl #contentsBox{
+    margin: 25px 10px 20px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 95%;
+    resize: none;
+}
+.configTbl #contentsBox:focus{
+    border: 1px solid #aaa;
+}
+.configTbl .buttonTd{
+    text-align: center;
+}
+.configTbl .buttonTd button{
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;    
+}
+.configTbl .buttonTd button:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.configTbl .buttonTd button:first-child{
+    margin-right: 10px;
+}
+
+.configShadowDiv{
+    margin-bottom: 150px;
+}
+.configTbl tr th{
+	border-top: 1px solid rgb(234, 234, 234) !important;
+}
+.configBtnTr{
+	border: none !important;
+}
+.configBtnTr td{
+	border: none !important;
+}
+
+
+
+/* board_detail.css */
+
+
+.boardDetailTbl{
+    border: none;
+    width: 95%;
+    margin-top: 30px;
+}
+
+.boardDetailTbl th{
+    width: 15%;
+    margin-right: 10px;
+}
+.boardDetailTbl td{
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+.boardDetailTbl tr:first-child td{
+    border-top: 1px solid #ddd;
+}
+.boardDetailTbl tr:last-child td{
+    border: none;
+}
+
+.boardDetailTbl td{
+	text-align: left;
+}
+.boardDetailTbl .buttonTd {
+	text-align: center;
+}
+.boardDetailTbl .buttonTd a{
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.boardDetailTbl .buttonTd button:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.boardDetailTbl .buttonTd button:last-child{
+    margin-right: 0;
+}
+
+
+/* board_write_modify.css */
+
+
+.modifyTbl{
+    border: none;
+    width: 95%;
+    margin-top: 30px;
+}
+.modifyTbl th{
+    width: 15%;
+    margin-right: 10px;
+    border: 1px solid rgb(234, 234, 234) !important;
+}
+.modifyTbl td{
+    padding: 20px;
+    text-align: left;
+    border-right: 1px solid rgb(234, 234, 234);
+}
+.modifyTbl tr:first-child td{
+    border-top: 1px solid rgb(234, 234, 234);
+}
+.modifyTbl tr:last-child td{
+    border: none;
+}
+
+.modifyTbl .textField{
+    padding: 10px;
+    width: 40%;
+    border:none;
+    border-bottom: 1px solid #bbb;
+    outline: none;
+}
+.modifyTbl .textField:focus{
+    border-bottom: 1px solid gray;
+}
+.modifyTbl .searchField{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+.modifyTbl .searchField:focus{
+    border: 1px solid gray;
+}
+.modifyTbl #contentBox{
+    resize: none;
+    width: 100%;
+    height: 250px;
+    border: 1px solid #ccc;
+}
+.modifyTbl #contentBox:focus{
+    border: 1px solid gray;
+    padding: 15px;
+}
+
+.modifyTbl .buttonTd{
+    text-align: center;
+}
+.modifyTbl .buttonTd button{
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.modifyTbl .buttonTd button:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.modifyTbl .buttonTd button:last-child{
+    margin-right: 0;
+}
+.modifyTbl #schDate{
+	width: 145px;
+	text-align: center;
+}
+
+/* quantityControl.css */
+
+/******************* top ***********************/
+
+.quantityControlWrap #titleDiv{
+    margin-bottom: 30px;
+}
+.quantityControlWrap #topDivTitle{
+    display: inline-block;
+    background-color: rgb(49, 58, 67);
+    width: 200px;
+    height: 70px;
+    color: white;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+
+/******************* top-left ***********************/
+
+.quantityControlWrap #topLeftDiv{
+    width: 48%;
+    float: left;
+    margin-bottom: 100px;
+}
+.quantityControlWrap #detailTbl{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    height: 381px;
+    border-bottom: none;
+    text-align: center;
+}
+.quantityControlWrap #detailTbl th, #detailTbl td{
+    border-bottom: 1px solid rgb(230, 230, 230);
+    padding: 0 20px;
+    height: 70px;
+}
+.quantityControlWrap #detailTbl th{
+    text-align: center;
+    font-size: 17px;
+    width: 25%;
+    border: 1px solid #ccc;
+}
+
+.quantityControlWrap #detailTbl td{
+    font-size: 16px;
+    color: #555;
+    padding: 15px;
+}
+.quantityControlWrap #detailTbl tr:last-child th, #detailTbl tr:last-child td{
+    border-bottom: 1px solid #ccc !important;
+}
+.quantityControlWrap .su{
+    background-color: rgb(252, 232, 233);
+}
+.quantityControlWrap .do{
+    background-color: rgb(230, 245, 252);
+}
+/******************* top-right ***********************/
+
+
+.quantityControlWrap #topRightDiv{
+    width: 48%;
+    float: right;
+    text-align: center;
+}
+.quantityControlWrap #top_maesuDiv{
+    float: left;
+    height: 381px;
+    width: 50%;
+    background-color: rgb(243, 247, 251);
+}
+.quantityControlWrap #top_maedoDiv{
+    float: right;
+    height: 381px;
+    width: 50%;
+    background-color: rgb(230, 245, 252);
+}
+.quantityControlWrap .topDivTitle{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+    padding: 30px;
+}
+.quantityControlWrap #topMaesuTitle{
+    color: rgb(68, 131, 197);
+}
+.quantityControlWrap #topMaedoTitle{
+    color: rgb(1, 156, 222);
+}
+.quantityControlWrap .top_right_p{
+    margin-bottom: 15px;
+    text-align: center;
+}
+.quantityControlWrap .filedBtn{
+    width: 85%;
+    margin: 15px auto 25px;
+}
+.quantityControlWrap .countField{
+    height: 45px;
+    text-align: center;
+    border: 1px solid #ccc;
+    width: 58%;
+}
+.quantityControlWrap .inputBtn{
+    display:inline-block;
+    height: 45px;
+    width: 43%;
+    background-color: rgb(245, 245, 245);
+    margin-left: -10px;
+    outline: none;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s all;
+}
+.quantityControlWrap .inputBtn:hover{
+    background-color: rgb(49, 58, 67);
+    color: white;
+}
+.quantityControlWrap .redBtn, .blueBtn{
+    width: 85%;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border: none;
+    color: white;
+    padding: 15px 0;
+}
+
+.quantityControlWrap .redBtn{
+    background-color: rgb(68, 131, 197);
+    border-radius: 5px;
+}
+.quantityControlWrap .blueBtn{
+    background-color: rgb(1, 156, 222);
+    border-radius: 5px;
+}
+
+/******************* bot ***********************/
+.quantityControlWrap #botDiv{
+    margin-bottom: 700px;
+}
+.quantityControlWrap .borderP{
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+.quantityControlWrap #bot_maesuDiv, .quantityControlWrap #bot_maedoDiv{
+    width: 49%;
+}
+.quantityControlWrap #bot_maesuDiv{
+    float: left;
+}
+.quantityControlWrap #bot_maedoDiv{
+    float: right;
+}
+.quantityControlWrap #maesuTbl, .quantityControlWrap #maedoTbl{
+    width: 100%;
+    border: 1px solid #ccc;
+}
+.quantityControlWrap .botTbl{
+    text-align: center;
+    border-collapse: collapse;
+}
+.quantityControlWrap .botTbl thead tr td{
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    font-size: 20px;
+}
+.quantityControlWrap .botTbl tbody tr td{
+    padding: 15px 0;
+    border: 1px solid #ddd;
+}
+.quantityControlWrap .botTbl tbody tr td:first-child{
+    width: 40%;
+}
+
+.quantityControlWrap #maesuTblTitle{
+    background-color: rgb(252, 232, 233);
+    margin-bottom: 200px;
+}
+.quantityControlWrap #maedoTblTitle{
+    background-color: rgb(230, 245, 252);
+}
+.quantityControlWrap .botBtn{
+    width: 40%;
+    cursor: pointer;
+    background-color: white;
+    outline: none;
+    padding: 15px 0;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s all;
+}
+.quantityControlWrap .waitBtn{
+    border: 1px solid rgb(1, 156, 222);
+    color: rgb(1, 156, 222);
+    background-color: rgba(1, 156, 222, 0.1);
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.quantityControlWrap .stopBtn{
+    border: 1px solid rgb(203, 31, 29);
+    color: rgb(203, 31, 29);
+    background-color: rgba(203, 31, 29, 0.1);
+}
+.quantityControlWrap .waitBtn:hover{
+    background-color: rgb(1, 156, 222);
+    color: white;
+}
+.quantityControlWrap .stopBtn:hover{
+    background-color: rgb(203, 31, 29);
+    color: white;
+}
+
+
+/* realTimeOrderStatus.css */
+
+
+.realTimeOrderStatusWrap #wrapping{
+    width: 100%;
+}
+.realTimeOrderStatusWrap #hrDiv{
+    margin-bottom: 30px;
+}
+.realTimeOrderStatusWrap #topWrap{
+    margin-top: 50px;
+}
+.realTimeOrderStatusWrap #epiDiv{
+    float: left;
+    width: 15%;
+    text-align: center;
+    background-color: rgb(49, 58, 67);
+    height: 150px;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+.realTimeOrderStatusWrap #epiDiv span{
+    color: white;
+}
+.realTimeOrderStatusWrap .topRightDiv{
+    width: 20%;
+    float: right;
+}
+.realTimeOrderStatusWrap #epiTitle{
+    font-weight: bold;
+    font-size: 35px;
+    display: inline-block;
+    margin: 23px 0 13px;
+}
+.realTimeOrderStatusWrap #epiDate{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.realTimeOrderStatusWrap .topRightDiv{
+    padding: 10px;
+}
+.realTimeOrderStatusWrap .topRightDiv table{
+    border-collapse: collapse;
+    width: 100%;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr:first-child td{
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 20px !important;
+    text-align: center !important;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr td{
+    padding: 15px 3px;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr td:first-child{
+    font-weight: bold;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr td:last-child{
+    text-align: right;
+    font-size: 14px;
+    color: #444;
+}
+.realTimeOrderStatusWrap #topMaedoDiv{
+    background-color: rgb(230, 245, 252);
+    border: 1px solid rgba(1, 156, 222, 0.1);
+    border-radius: 5px;
+}
+.realTimeOrderStatusWrap #topMaesuDiv{
+    background-color: rgb(252, 232, 233);
+    border: 1px solid rgba(203, 31, 29, 0.1);
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.realTimeOrderStatusWrap #topMaedoDiv table tr:first-child td{
+    color: rgb(1, 156, 222);
+}
+.realTimeOrderStatusWrap #topMaesuDiv table tr:first-child td{
+    color: rgb(203, 31, 29);
+}
+.realTimeOrderStatusWrap #listTbl{
+    width: 100%;
+}
+
+
+/*WithdrawalApplication.css*/
+.waWrap #section{
+    margin-bottom: 1800px;
+}
+
+.waWrap #botSearchField{
+    width: 300px;
+}
+
+
+.waWrap input[type=date]::-webkit-inner-spin-button {
+    display: none;
+}
+.boardDiv input[type=date]::-webkit-inner-spin-button{
+	display: none;
+}
+
+.waWrap .borderP{
+    border-bottom: 1px solid #ccc;
+}   
+.waWrap #topDivTitle{
+    display: inline-block;
+    background-color: rgb(49, 58, 67);
+    width: 200px;
+    height: 70px;
+    color: white;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+
+.waWrap #leftSchDiv{
+    float: left;
+}
+
+.waWrap #rightSchDiv{
+    float: right;
+}
+.waWrap .orderBtn{
+    cursor: pointer;
+    background-color: white;
+    padding: 10px 25px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    transition: 0.3s all;
+    font-weight: bold;
+    font-size: 15px;
+}
+.waWrap .orderBtn:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.waWrap .orderBtnOn{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+
+.waWrap #listPageDiv p, .boardDiv #listPageDiv p{
+    margin: 20px 10px 0 0;
+    text-align: right;
+}
+
+
+
+
+
+
+.waWrap .botSearchDiv{
+    margin-bottom: 0 !important;
+}
+.waWrap #botCenterDiv{
+    border: 1px solid #ddd;
+    padding: 50px;
+}
+.waWrap .cDiv{
+    float: left;
+    height: 300px;
+    background-color: rgb(235, 235, 235);
+    width: 32%;
+    border-right: 1px solid #ccc;
+    padding: 30px;
+}
+.waWrap #leftDiv{
+    margin-left: 24px;
+}
+.waWrap #leftDiv table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.waWrap #leftDiv table td{
+    padding: 20px;
+}
+.waWrap #leftDiv table td input[type="text"]{
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.waWrap #leftDiv table tr{
+    border-bottom: 1px solid #ccc;
+}
+.waWrap #leftDiv table tr td:first-child{
+    font-weight: bold;
+    color: #444;
+}
+.waWrap #leftDiv table tr:last-child{
+    border-bottom: none;
+}
+
+.waWrap #midDiv{
+    text-align: center;
+}
+.waWrap #midFieldDiv{
+    padding-top: 28px;
+}
+.waWrap .pmBtn{
+    width: 33px;
+    height: 33px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.waWrap #plusBtn{
+    background-color: rgb(1, 156, 222);
+    border: 1px solid rgb(1, 156, 222);
+}
+.waWrap #minusBtn{
+    background-color: rgb(203, 31, 29);
+    border: 1px solid rgb(203, 31, 29);
+}
+.waWrap #rightDiv{
+    border-right: none;
+}
+.waWrap #pmField{
+    height: 38px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    width: 172.8px;
+}
+.waWrap #midTextDiv{
+    width: 363px;
+}
+.waWrap #pmField::placeholder{
+    color: #666;
+    font-size: 12px;
+}
+.waWrap #midDiv table{
+    width: 363px;
+    margin-top: 20px;
+    padding: 0 50px;
+}
+.waWrap #midDiv table tr td{
+    padding: 20px 0;
+    font-weight: bold;
+}
+.waWrap #rightDiv{
+    text-align: right;
+    font-weight: bold;
+    padding-top: 100px;
+    margin-right: 15px;
+}
+.waWrap #totalP{
+    color: #666;
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+}
+.waWrap #totalPriceP{
+    font-size: 30px;
+}
+.waWrap #bot_botDiv{
+    text-align: right;
+    padding: 40px 30px 0 0;
+}
+#logo img {
+    width: 180px;
+}
+#headerSubMenu ul {
+    margin-top: 30px;
+}
+.pop-layer .btn-r {
+    width: 100%;
+    text-align: center;
+}
+.pop-layer {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: auto;
+    background-color: #fff;
+    z-index: 10;
+}
+
+.dim-layer {
+    display: none;
+    position: fixed;
+    _position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+.dim-layer .dimBg { /* 딤 설정 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
+
+.dim-layer .pop-layer {
+    display: block;
+}
+
+.pop_btn {
+    display: inline-block;
+    padding: 9px 0;
+    border: none;
+    font-size: 13px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 3px;
+    width: 110px;
+}
+.pop_ok_btn{
+    background-color: rgb(70, 130, 200);
+}
+.btn-layerClose{
+    background-color: rgb(189, 189, 189);
+}
+
+#popup_title {
+    margin: 0;
+    color: white;
+    font-weight: bold;
+}
+
+#pop_topDiv{
+    background-color: rgb(70, 130, 200);
+    padding: 30px;
+}
+div#pop_botDiv{
+    padding: 30px;
+}
+.popTblWrap{
+    height: 400px;
+    overflow: auto;
+}
+#pop_botDiv table{
+    width: 100%;
+    border-collapse: collapse;
+}
+#pop_botDiv table th{
+    text-align: left;
+    width: 25%;
+}
+#pop_botDiv table td{
+    font-size: 14px;
+    font-weight: bold;
+}
+#pop_botDiv table th, #pop_botDiv table td{
+    padding: 15px;
+}
+#pop_botDiv table tbody tr{
+    background-color: rgb(239, 243, 246);
+}
+a.btn-example {
+    color: white;
+    display: inline-block;
+    padding: 10px 30px;
+}
+.popupClickBtn{
+	padding: 0;	
+}
+
+/* 체크박스 css */
+.checks {
+	position: relative;
+	margin: 15px 0 20px;
+}
+
+.checks .labelTxt {
+	color: rgb(102, 102, 102);
+	font-size: 15px;
+}
+
+.checks input[type="checkbox"] { /* 실제 체크박스는 화면에서 숨김 */
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0
+}
+
+.checks input[type="checkbox"]+label {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	color: rgb(80, 80, 80);
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.checks input[type="checkbox"]+label:before { /* 가짜 체크박스 */
+	content: ' ';
+	display: inline-block;
+	width: 21px; /* 체크박스의 너비를 지정 */
+	height: 21px; /* 체크박스의 높이를 지정 */
+	line-height: 21px; /* 세로정렬을 위해 높이값과 일치 */
+	margin: -2px 8px 0 0;
+	text-align: center;
+	vertical-align: middle;
+	background: #fafafa;
+	border: 1px solid #cacece;
+	border-radius: 3px;
+}
+
+.checks.etrans input[type="checkbox"]+label {
+	padding-left: 60px;
+}
+
+.checks.etrans input[type="checkbox"]+label:before {
+	left: 30px;
+	top: 0;
+	margin-top: 7px;
+	opacity: .6;
+	box-shadow: none;
+	border-color: rgb(204, 204, 204);
+	background-color: white;
+	-webkit-transition: all .12s, border-color .08s;
+	transition: all .12s, border-color .08s;
+}
+
+.totalDiv {
+    float: right;
+    background: dimgray;
+    width: 170px;
+    color: white;
+    margin-left:5px;
+    padding: 5px;
+}
+
+.totalDiv p {
+	color: white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 2px 0;
+}
+
+.checks.etrans input[type="checkbox"]:checked+label:before {
+	content: "";
+	width: 10px;
+	top: -5px;
+	left: 35px;
+	border-radius: 0;
+	opacity: 1;
+	background: transparent;
+	border-color: transparent rgb(120, 120, 120) rgb(120, 120, 120)
+		transparent;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	-ms-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+@media all and (max-width: 1900px){
+	body{
+	    min-width: auto;
+	}
+	#wrap{
+	    width: 90%;
+	    margin: 0 auto;
+	    min-width: 1500px;
+	}	
+	#mainMenu ul{
+	    min-width: 1500px;
+	}
+}
+/* @media all and (max-width: 768px){
+	#wrap{
+	    width: 100%;
+	    margin: 0 auto;
+	    min-width: auto;
+	}	
+	#mainMenu ul{
+	    min-width: auto;
+	}
+} */

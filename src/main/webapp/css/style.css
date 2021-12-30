@@ -1,0 +1,326 @@
+/* =============================================================================
+
+	STYLE.CSS
+	version: 1.6
+	updated: 2009-03-06, 13:00 GMT+1
+
+============================================================================= */
+
+/* =============================================================================
+HTML - styles
+============================================================================= */
+@charset "UTF-8";
+
+*{
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', sans-serif;
+    margin: 0; padding: 0;
+    list-style: none;
+    text-decoration: none;
+    outline:none;
+    color: #333;
+}
+.clear{
+    clear: both;
+}
+body{
+    width: 100%;
+    min-width: 100%;
+}
+#wrap{
+    width: 1600px;
+    margin: 0 auto;
+    min-width: 1600px;
+}
+
+/****************************************************************************************************************** header */
+
+#logo{
+    margin: 20px 0 10px;
+    height: 75px;
+}
+#logo h1{
+    font-family: 'Lobster', cursive;
+    font-size: 55px;
+    margin-left: 20px;
+    color: #2730ad;
+    font-weight: normal;
+    width: 300px;
+}
+#mainMenu{
+    border-bottom: 1px solid #ccc;
+}
+#mainMenu ul li{
+    display: inline-block;
+    cursor: pointer;
+    width: 130px;
+    height: 60px;
+    margin-right: -6px;
+    text-align: center;
+    line-height: 60px;
+    font-weight: bold;
+    transition: 0.3s color;
+}
+#mainMenu ul li:hover{
+    color: #f2685b;
+}
+.mainOn{
+    color: #f2685b;
+}
+
+
+#subMenu{
+    margin-top: 50px;
+    width: 13%;
+    float: left;
+}
+#subMenu ul{
+    box-shadow: 3px 3px 3px #ccc;
+    border: 1px solid rgb(240, 240, 240);
+
+}
+
+#subMenu ul li{
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0px;
+    transition: 0.3 color;
+}
+#subMenu ul li:hover{
+    color: red;
+}
+.subOn{
+    color: red;
+}
+/*****************************************************************************************************/
+#section{
+    float: right;
+    height: 20px;
+    padding-top: 50px;
+    width: 84%;
+}
+#titleDiv{
+    border: 1px solid rgb(240, 240, 240);
+    border-bottom: 1px solid #ccc;
+}
+#titleDiv h1{
+    padding: 20px;
+    font-size: 30px;
+    color: black;
+}
+
+#shadowDiv{
+    box-shadow: 3px 3px 3px #ccc;
+    border: 1px solid #ddd;
+}
+
+/**************************************************************************************************** btn css*/
+.btn{
+    border-radius: 5px;
+    background-color: rgb(28, 28, 28);
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s background-color;
+}
+.btn:hover{
+    background-color: rgb(154, 2, 0);
+}
+
+.btn2{
+	cursor: pointer;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.btn2:hover{
+	color: #f2685b;
+    border: 1px solid #f2685b;
+}
+/**************************************************************************************************** btn css*/
+/* 테이블 */
+
+#listTbl{
+    width:100%;
+    margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+#listTbl th{
+    text-align: center;
+    font-size: 15px;
+    background-color: #eee;
+}
+#listTbl tr{
+    border-bottom: 1px solid #ddd;
+}
+
+
+#listTbl th, #listTbl td{
+    padding: 15px;
+}
+#listTbl td{
+    font-size: 14px;
+    color: #444;
+    line-height: 20px;
+}
+#listTbl thead tr{
+    background-color: rgb(240, 240, 240);
+    border-bottom: 1px solid #ccc;
+}
+
+#boardAddBtn{
+    padding: 10px 20px;
+    margin: 30px;
+}
+
+/* 페이징 */
+#listPage {
+    text-align: center;
+    margin-top: 50px;
+    
+}
+
+#listPage li {
+    display: inline-block;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    height: 30px;
+    border: 1px solid #ccc;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+#listPage li:hover {
+    background-color: black;
+    color: white;
+}
+
+#listPageDiv{
+    margin-bottom: 200px;
+}
+
+body {background-color:#eaeaea; color:#303030;}
+
+a {color:#6c6c6c;text-decoration:none;}
+a:hover, a:active, a:focus {color:#df0000;}
+#content h2 {color:#0085cc;}
+#content table {border:2px solid #cfcfcf;}
+#content table th {border-right:1px solid #0074B3; background-color:#0085cc; color:#fff;}
+#content table td {border:1px solid #cfcfcf; vertical-align: middle;}
+#content table tr.bg td {background-color:#e8f6ff;}
+#content dl dt {color:#df0000;}
+#content fieldset {border:1px solid #ccc;}
+#content legend {background:#FFF; color:#0085cc;}
+#content acronym, #content abbr, #content .help {border-bottom:1px dotted #cfcfcf;}
+#content p.dotline{background:url(/boffice/image/design/dotline.gif) repeat-x; height:2px; width:100%; margin:20px 0 ;}
+#content div.comment{ height:70px;}
+#content div.comment img{vertical-align:top;}
+
+
+#search fieldset a {color:#303030;}
+#search fieldset {border:1px solid #bfbfbf;}
+#search fieldset a:hover, #aside #search fieldset a:active, #aside #search fieldset a:focus {color:#df0000;}
+#search fieldset {padding:7px 10px;}
+#search fieldset p {margin:0; width:120px;}
+#search fieldset legend {font-weight:bold;}
+#search fieldset .input-text {width:200px;}
+#search fieldset #search-options {margin-top:10px;}
+#search fieldset .search_box{ float:left; width:100px; margin-left:100px; position:relative;}
+#search fieldset .search_input { float:left; width:500px;margin-left:100px;margin-top:-20px}
+/* =============================================================================
+HTML - without styles
+============================================================================= */
+
+table.nostyle th, dl.nostyle dt {color:#303030 !important;}
+.paging{width:100%; height:50px; margin:15px; text-align:center}
+.paging a{ padding:0 5px;}
+.paging a.on, .paging a:hover{color:red}
+.btn_right {margin-top:15px; text-align:right;}
+
+
+/* =============================================================================
+LAYOUT
+============================================================================= */
+
+#tray {background-color:#303030; color:#cfcfcf;}
+#tray a, #tray strong {color:#fff;}
+#tray a:hover, #tray a:active, #tray a:focus {color:#b4e3ff;}
+#menu {background-color:#0085cc;}
+
+#menu ul li a {background-color:#fff;  color:#999;}
+#menu ul li a span {background-color:#FFF;}
+
+#menu ul li a:hover span, #menu ul li#menu-active a span {}
+#menu ul li#menu-active a {color:#0085cc;}
+#menu ul.f-right a {color:#df0000;}
+#content {border:1px solid #afafaf; background:#fff;}
+#footer {color:#707070;}
+#footer a {color:#707070;}
+#footer a:hover, #footer a:active, #footer a:focus {color:#303030;}
+
+
+/* =============================================================================
+OTHERS
+============================================================================= */
+
+#aside .padding {padding-left:15px;}
+#aside #logo {margin:0 0 15px 0; padding:10px 0 10px 0; width:200px; border:1px solid #bfbfbf; background-color:#FFF;}
+#aside #logo img {display:block; margin:0 auto }
+/*aside-menu*/
+#aside ul {width:215px; margin:0 0 15px 0; list-style:none;}
+#aside ul li {display:inline; font-weight:bold; }
+#aside ul li.fsub a{border-bottom:1px solid #cfcfcf; color:#303030;width:170px; padding:5px 15px 5px 30px; background:url("/boffice/image/design/submenu-sub.gif") 15px 7px no-repeat;background-color:#f5f5f5; font:85%/1.2 "tahoma",sans-serif; font-weight:normal;}
+#aside ul li.fsub div a{padding:5px 5px 5px 45px;width:165px;  background:url("/boffice/image/design/submenu-sub.gif") 25px 7px no-repeat; background-color:#fff;border-bottom:1px solid #cfcfcf; color:#303030;font:85%/1.2 "tahoma",sans-serif; font-weight:normal;}
+
+#aside ul li a {display:block; width:185px; padding:4px 15px; text-decoration:none;border-bottom:1px solid #cfcfcf; color:#303030;}
+#aside ul li a:hover, #aside ul li a:active, #aside ul li a:focus {color:#df0000;}
+#aside ul ul {margin:0; position:static;}
+#aside ul ul li a{border-bottom:1px solid #cfcfcf; color:#303030;width:170px; padding:5px 15px 5px 30px; background:url("/boffice/image/design/submenu-sub.gif") 15px 7px no-repeat;background-color:#f5f5f5; font:85%/1.2 "tahoma",sans-serif; font-weight:normal;}
+#aside ul ul li a:hover, #aside ul ul li a:active, #aside ul ul li a:focus{color:#df0000;}
+#aside ul ul li ul li a{padding:5px 5px 5px 45px;width:165px;  background:url("/boffice/image/design/submenu-sub.gif") 25px 7px no-repeat; background-color:#fff;border-bottom:1px solid #cfcfcf; color:#303030;font:85%/1.2 "tahoma",sans-serif; font-weight:normal;}
+
+/*aside-menu-active*/
+#aside ul li#submenu-active a {width:198px; border:0; background:url("../design/submenu-active.gif") 100% 50% no-repeat; font-weight:bold; z-index:999;background-color:#df0000; color:#fff;} 
+#aside ul li#submenu-active ul li a {border-bottom:1px solid #cfcfcf;  color:#303030;width:170px; padding:5px 15px 5px 30px; background:url("/boffice/image/design/submenu-sub.gif") 15px 7px no-repeat;background-color:#f5f5f5; font:85%/1.2 "tahoma",sans-serif; font-weight:normal;}
+#aside ul li#submenu-active ul li a:hover, #aside ul li#submenu-active ul li a:active, #aside ul li#submenu-active ul li a:focus {color:#df0000;}
+#aside ul li#submenu-active ul li ul li a{width:165px; padding:5px 5px 5px 45px; background:url("../design/submenu-sub.gif") 25px 7px no-repeat; font:85%/1.2 "tahoma",sans-serif; font-weight:normal;border-bottom:1px solid #cfcfcf; background-color:#fff; color:#303030;}
+
+
+
+
+/*content*/
+
+#content h1 {background-color:#303030; color:#fff;}
+#content .tabs {border-bottom:1px solid #cfcfcf;}
+#content .tabs a {color:#303030;}
+#content .tabs a span {color:#303030;}
+#content .tabs .ui-tabs-selected a {color:#fff;}
+#content .tabs .ui-tabs-selected a span {color:#fff;}
+.high {color:#df0000;}
+.high-bg {background:#FFB;}
+.low {color:#707070;}
+
+
+/* =============================================================================
+MESSAGES
+============================================================================= */
+
+.msg.warning {border:2px solid #F2DD8C; background-color:#FFF5CC;}
+.msg.warning a {color:#df0000;} .msg.warning a:hover, .msg.warning a:active, .msg.warning a:focus {color:#303030;}
+.msg.info {border:2px solid #B8E2FB; background-color:#E8F6FF;}
+.msg.done {border:2px solid #BBDF8D; background-color:#EAF7D9;}
+.msg.error {border:2px solid #FFAEAE; background-color:#FEEBEB;}

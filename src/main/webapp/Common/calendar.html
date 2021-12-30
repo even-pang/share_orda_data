@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<TITLE>달력 </TITLE>
+<!-- 	<link rel=StyleSheet HREF="/resources/css/offices_style.css" type=text/css title=style> -->
+	<!-- script src="/common/js/calendar.js"></script -->
+	<style type="text/css">
+		a.link:link { font-size: 8pt; text-decoration: none;}
+		a.link:visited { font-size: 8pt;  text-decoration: none;}
+		td {font-family:"돋움"; font-family: "Verdana"; font-size: 11px;line-height: 17px;color: #6c6c6c;}
+		a:active {text-decoration:none}
+		a:visited {text-decoration:none; color:#9c9c9c}
+		a:hover  {text-decoration:none; color:#5674B9}
+		input,select,textarea{ font-size:11px; color:#585858;}
+	</style>
+</head>
+
+<body leftmargin=2px topmargin=0 marginwidth=0 marginheight=0 bgcolor="ffffff">
+<center>
+
+<script>
+<!--
+/******** 환경설정 부분 *******************************************************/
+
+var giCellWidth = 25;
+//var gMonths = new Array("1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월");
+var gMonths = new Array("1","2","3","4","5","6","7","8","9","10","11","12");
+var gcOtherDay = "#e5e5e5";
+var gcToggle = "#D7EAFF";
+var gcBG = "#ffffff";
+var gcTodayBG = "#ADD0FF";
+var gcFrame = "#C3C3C3";
+var gcHead = "white";
+var gcWeekend = "red";
+var gcWorkday = "black";
+var gcCalBG = "#ffffff";
+
+
+var gcTemp = gcBG;
+var gdCurDate = new Date();
+var giYear = gdCurDate.getFullYear();
+var giMonth = gdCurDate.getMonth()+1;
+var giDay = gdCurDate.getDate();
+var tbMonSelect, tbYearSelect;
+var gCellSet = new Array;
+var giStartYear = 2000;
+var giEndYear = giYear + 10;
+
+function fSetDate(iYear, iMonth, iDay){
+	var year	=	iYear;
+	var month	=	iMonth;
+	var day		=	iDay;
+ 	if(month < 10) {
+ 		month ="0"+iMonth;
+ 	}
+ 	if(day < 10) {
+ 		day="0"+iDay;
+ 	}
+
+//	window.opener.onCalendarChange( year, month, day );
+//	window.close();
+    parent.onCalendarChange( year, month, day );
+    hide_cal();
+}
+
+function fSetSelected(aCell){
+  var iOffset = 0;
+  var iYear   = parseInt(tbSelYear.value);
+  var iMonth  = parseInt(tbSelMonth.value);
+
+  aCell.bgColor = gcBG;
+  with (aCell.firstChild){
+  	var iDate = parseInt(innerHTML);
+  	if (style.color==gcOtherDay)
+		iOffset = (Victor<10)?-1:1;
+	iMonth += iOffset;
+	if (iMonth<1) {
+		iYear--;
+		iMonth = 12;
+	}else if (iMonth>12){
+		iYear++;
+		iMonth = 1;
+	}
+  }
+
+  fSetDate(iYear, iMonth, iDate);
+}
+
+
+function fBuildCal(iYear, iMonth) {
+  var aMonth=new Array();
+  for(i=1;i<7;i++)
+  	aMonth[i]=new Array(i);
+
+  var dCalDate=new Date(iYear, iMonth-1, 1);
+  var iDayOfFirst=dCalDate.getDay();
+  var iDaysInMonth=new Date(iYear, iMonth, 0).getDate();
+  var iOffsetLast=new Date(iYear, iMonth-1, 0).getDate()-iDayOfFirst+1;
+  var iDate = 1;
+  var iNext = 1;
+
+  for (d = 0; d < 7; d++)
+	aMonth[1][d] = (d<iDayOfFirst)?-(iOffsetLast+d):iDate++;
+  for (w = 2; w < 7; w++)
+  	for (d = 0; d < 7; d++)
+		aMonth[w][d] = (iDate<=iDaysInMonth)?iDate++:-(iNext++);
+  return aMonth;
+}
+
+function fDrawCal(iCellWidth) {
+	//var WeekDay = new Array("SUN","MON","TUE","WED","THU","FRI","SAT");
+  var WeekDay = new Array("일","월","화","수","목","금","토");
+  var styleTD = " width='"+iCellWidth+"' ";
+
+  with (document) {
+	write("<tr>");
+	for(i=0; i<7; i++)
+		write("<td class='CalHead' "+styleTD+" bgcolor=DDDDDD align='center'>" + WeekDay[i] + "</td>");
+	write("</tr>");
+
+  	for (w = 1; w < 7; w++) {
+		write("<tr>");
+		for (d = 0; d < 7; d++) {
+			write("<td class='CalCell' "+styleTD+" align='center' onMouseOver='gcTemp=this.bgColor;this.bgColor=gcToggle;this.bgColor=gcToggle' onMouseOut='this.bgColor=gcTemp;this.bgColor=gcTemp' onclick='fSetSelected(this)'>");
+			write("<A href='#null' onfocus='this.blur();' Victor='Liming Weng' class=link>00</A></td>");
+		}
+		write("</tr>");
+	}
+  }
+}
+
+function fUpdateCal(iYear, iMonth) {
+  myMonth = fBuildCal(iYear, iMonth);
+  var i = 0;
+  var iDate = 0;
+  for (w = 0; w < 6; w++)
+	for (d = 0; d < 7; d++)
+		with (gCellSet[(7*w)+d]) {
+			Victor = i++;
+			if (myMonth[w+1][d]<0) {
+				style.color = gcOtherDay;
+				innerHTML = -myMonth[w+1][d];
+				iDate = 0;
+			}else{
+				style.color = ((d==0)||(d==6))?gcWeekend:gcWorkday;
+				innerHTML = myMonth[w+1][d];
+				iDate++;
+			}
+
+			parentNode.bgColor = ((iYear==giYear)&&(iMonth==giMonth)&&(iDate==giDay))?gcTodayBG:gcBG;
+			parentNode.bgColor = parentNode.bgColor;
+		}
+}
+
+function fSetYearMon(iYear, iMon){
+  tbSelMonth.options[iMon-1].selected = true;
+  if (iYear>giEndYear) iYear=giEndYear;
+  if (iYear<giStartYear) iYear=giStartYear;
+  tbSelYear.options[iYear-giStartYear].selected = true;
+  fUpdateCal(iYear, iMon);
+}
+
+function fPrevMonth(){
+  var iMon = tbSelMonth.value;
+  var iYear = tbSelYear.value;
+
+  if (--iMon<1) {
+	  iMon = 12;
+	  iYear--;
+  }
+
+  fSetYearMon(iYear, iMon);
+}
+
+function fNextMonth(){
+  var iMon = tbSelMonth.value;
+  var iYear = tbSelYear.value;
+
+  if (++iMon>12) {
+	  iMon = 1;
+	  iYear++;
+  }
+
+  fSetYearMon(iYear, iMon);
+
+}
+function hide_cal(){
+	document.location="about:blank";
+	if (parent.document.getElementById( "calendar" )) {
+	    parent.document.getElementById( "calendar" ).style.visibility="hidden";
+    } else {
+	    parent.CalendarClose();
+	}
+}
+
+with (document) {
+	write("<div align='center'><table name='popTable' bgcolor='"+gcCalBG+"' cellspacing='0' cellpadding='0' border='0'><form name='cal'><tr><td height='2'colspan='4'></td></tr><TR>");
+	write("<td align='center'><img src='./calleftarrow.gif' onClick='fPrevMonth();' style='cursor:hand' /></td>");
+	write("<td align='center'><select name='tbMonSelect' class='HeadBox' onChange='fUpdateCal(tbSelYear.value, tbSelMonth.value)' Victor='Won'>");
+	for (i=0; i<12; i++)
+		write("<option value='"+(i+1)+"'>"+gMonths[i]+"</option>");
+	write("</SELECT>&nbsp;<SELECT name='tbYearSelect' class='HeadBox' onChange='fUpdateCal(tbSelYear.value, tbSelMonth.value)' Victor='Won'>");
+	for(i=giStartYear;i<=giEndYear;i++)
+		write("<OPTION value='"+i+"'>"+i+"</OPTION>");
+	write("</SELECT></td><td align='center' width='10px;'><img src='./calrightarrow.gif' onClick='fNextMonth();' style='cursor:hand' /></td>");
+	write("<td align='center'><img src='./calclose.gif' onClick='hide_cal();' style='cursor:hand' />");
+	
+	write("</td></TR><TR><td colspan='4'>");
+	write("<DIV style='background-color:"+gcFrame+";width:"+((giCellWidth+6)*7+2)+"px;'><table border='0' cellpadding='3' cellspacing='1'>");
+	tbSelMonth = getElementsByName("tbMonSelect")[0];
+	tbSelYear = getElementsByName("tbYearSelect")[0];
+	fDrawCal(giCellWidth);
+	gCellSet = getElementsByTagName("A");
+	fSetYearMon(giYear, giMonth);
+	write("</table></DIV></td></TR></td></tr>");
+	write("</TD></TR></form></TABLE></div>");
+
+}
+// -->
+</script>
+</center>
+</body>
+</html>
+

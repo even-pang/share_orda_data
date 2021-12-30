@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminMember">
+    <!--  cache eviction="WEAK" flushInterval="30000" readOnly="true" size="512"></cache  -->
+
+    <resultMap type="java.util.Map" id="memberMap">
+        <result property="RSN" column="RSN" javaType="String" jdbcType="CLOB"/>
+    </resultMap>
+
+
+    <select id="adminLogin" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+          AND A.pwd = #{user_pw}
+          AND A.USER_TYPE in ('ADMIN', 'MANAGER', 'COUNSEL')
+          AND A.use_yn = 'Y'
+    </select>
+
+    <select id="login" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+          AND A.pwd = #{user_pw}
+          AND A.use_yn = 'Y'
+    </select>
+
+    <update id="userVisit" parameterType="java.util.Map">
+        UPDATE TB_USER
+        SET VISIT_DT = sysdate
+        WHERE USER_ID = #{user_id}
+    </update>
+
+    <select id="userFirstMenu" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT *
+        FROM (
+        SELECT /*+index(B IDX_TB_MENU_01)*/
+        B.*
+        FROM TB_MENU B
+        WHERE EXISTS (
+        SELECT 'X'
+        FROM TB_USERMENU C
+        WHERE USER_ID = #{USER_ID}
+        AND B.MENU_NO = C.MENU_NO
+        UNION ALL
+        SELECT 'X'
+        FROM DUAL
+        WHERE 'ADMIN' = #{USER_TYPE}
+        )
+        AND B.MENU_GB = 'ADMIN'
+
+        <if test="FULL_MENU_LIKE   != null">AND B.FULL_MENU_NO like #{FULL_MENU_LIKE, jdbcType=VARCHAR } || ',%'</if>
+
+        AND B.MENU_LVL  <![CDATA[ >= ]]> 2
+        AND B.USE_YN ='Y'
+        AND B.ORD <![CDATA[ >= ]]> 0
+        ORDER BY B.MENU_GB, B.ORD
+        )
+        WHERE ROWNUM <![CDATA[ <= ]]> 1
+    </select>
+
+    <select id="userDetail" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT USER_ID,
+               PWD,
+               USER_NM,
+               USER_TYPE,
+               USE_YN,
+               REG_DT,
+               REG_IP,
+               USER_NICK,
+               VISIT_DT,
+               TELNO,
+               USER_GPIN,
+               USE_AGREE_DT,
+               PERSON_AGREE_DT,
+               MOD_DT
+        FROM TB_USER A
+        WHERE A.user_id = #{user_id}
+    </select>
+
+    <!--  회원 등록하기 -->
+    <insert id="userInsert" parameterType="java.util.Map">
+
+        INSERT INTO TB_USER
+        (USER_ID,
+         PWD,
+         USER_NM,
+         USER_TYPE,
+         USE_YN,
+         REG_DT,
+         REG_IP,
+         USER_NICK,
+         VISIT_DT,
+         TELNO,
+         USER_GPIN,
+         USE_AGREE_DT,
+         PERSON_AGREE_DT)
+        VALUES (#{USER_ID ,jdbcType=VARCHAR},
+                #{PWD ,jdbcType=VARCHAR},
+                #{USER_NM ,jdbcType=VARCHAR},
+                #{USER_TYPE ,jdbcType=VARCHAR},
+                nvl(#{use_yn  , jdbcType=VARCHAR}, 'Y'),
+                to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'),
+                #{reg_ip ,jdbcType=VARCHAR},
+                #{user_nick ,jdbcType=VARCHAR},
+                #{visit_dp ,jdbcType=DATE},
+                #{telno ,jdbcType=VARCHAR},
+                #{user_gpin ,jdbcType=VARCHAR},
+                #{use_agree_dt ,jdbcType=DATE},
+                #{person_agee_dt ,jdbcType=DATE})
+    </insert>
+
+    <!-- 회원  수정하기 -->
+    <update id="userUpdate" parameterType="java.util.Map">
+        UPDATE TB_USER
+        SET PWD             = Nvl(#{pwd,      jdbcType=VARCHAR}, pwd),
+            USER_NM         = Nvl(#{user_nm,  jdbcType=VARCHAR}, user_nm),
+            USER_TYPE       = Nvl(#{user_type,jdbcType=VARCHAR}, USER_TYPE),
+            USE_YN          = Nvl(#{use_yn,   jdbcType=VARCHAR}, USE_YN),
+            USER_NICK       = Nvl(#{user_nick,jdbcType=VARCHAR}, user_nick),
+            VISIT_DT        = Nvl(#{visit_dt,jdbcType=DATE}, visit_dt),
+            TELNO           = Nvl(#{telno,jdbcType=VARCHAR}, telno),
+            USE_AGREE_DT    = Nvl(#{use_agree_dt,jdbcType=DATE}, use_agree_dt),
+            PERSON_AGREE_DT = Nvl(#{person_agree_dt,jdbcType=DATE}, person_agree_dt)
+        WHERE USER_ID = #{user_id}
+    </update>
+
+    <!-- 회원  데이타 삭제하기 -->
+    <delete id="userDelete" parameterType="java.util.Map">
+        DELETE
+        FROM TB_USER
+        WHERE USER_ID = #{user_id}
+    </delete>
+
+
+    <select id="userList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        USER_ID,
+        PWD,
+        USER_NM,
+        USER_TYPE,
+        USE_YN,
+        REG_DT,
+        REG_IP,
+        USER_NICK,
+        VISIT_DT,
+        TELNO,
+        USER_GPIN,
+        USE_AGREE_DT,
+        PERSON_AGREE_DT,
+        MOD_DT
+        FROM TB_USER A
+        WHERE 1=1
+        <if test="use_yn    != null and use_yn !='' ">AND A.use_yn = #{use_yn}</if>
+        <if test="user_id   != null and user_id !=''">AND A.user_id = #{user_id}</if>
+        <if test="user_type != null and user_type !=''">AND A.user_type = #{user_type}</if>
+
+        <if test="sdt != null and sdt !='' ">
+            <if test="search_date == 'login_dt'">
+                AND A.visit_dt  <![CDATA[ >= ]]>  to_date(replace(#{sdt} || '000000', '-',''), 'yyyymmddhh24miss')
+            </if>
+
+            <if test="search_date == 'mod_dt'">
+                AND A.mod_dt  <![CDATA[ >= ]]>  to_date(replace(#{sdt} || '000000', '-',''), 'yyyymmddhh24miss')
+            </if>
+        </if>
+        <if test="edt != null and edt !='' ">
+            <if test="search_date == 'login_dt'">
+                AND A.visit_dt  <![CDATA[ <= ]]>  to_date(replace(#{edt} || '235959', '-',''), 'yyyymmddhh24miss')
+            </if>
+
+            <if test="search_date == 'mod_dt'">
+                AND A.mod_dt  <![CDATA[ <= ]]>  to_date(replace(#{edt} || '235959', '-',''), 'yyyymmddhh24miss')
+            </if>
+
+        </if>
+
+        <if test="keyword !=null and keyword != '' ">
+            <if test="keykind == 'user_id'">AND A.user_id like '%' || #{keyword} || '%'</if>
+            <if test="keykind == 'user_nm'">AND A.user_nm like '%' || #{keyword} || '%'</if>
+        </if>
+
+        ORDER BY REG_DT DESC
+
+    </select>
+
+    <select id="userCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(*)
+        FROM TB_USER A
+        WHERE 1=1
+        <if test="use_yn    != null and use_yn !='' ">AND A.use_yn = #{use_yn}</if>
+        <if test="user_id   != null and user_id !=''">AND A.user_id = #{user_id}</if>
+        <if test="user_type != null and user_type !=''">AND A.user_type = #{user_type}</if>
+
+        <if test="sdt != null and sdt !='' ">
+            <if test="search_date == 'login_dt'">
+                AND A.visit_dt  <![CDATA[ >= ]]>  to_date(replace(#{sdt} || '000000', '-',''), 'yyyymmddhh24miss')
+            </if>
+
+            <if test="search_date == 'mod_dt'">
+                AND A.mod_dt  <![CDATA[ >= ]]>  to_date(replace(#{sdt} || '000000', '-',''), 'yyyymmddhh24miss')
+            </if>
+        </if>
+        <if test="edt != null and edt !='' ">
+            <if test="search_date == 'login_dt'">
+                AND A.visit_dt  <![CDATA[ <= ]]>  to_date(replace(#{edt} || '235959', '-',''), 'yyyymmddhh24miss')
+            </if>
+
+            <if test="search_date == 'mod_dt'">
+                AND A.mod_dt  <![CDATA[ <= ]]>  to_date(replace(#{edt} || '235959', '-',''), 'yyyymmddhh24miss')
+            </if>
+
+        </if>
+
+        <if test="keyword !=null and keyword != '' ">
+            <if test="keykind == 'user_id'">AND A.user_id like '%' || #{keyword} || '%'</if>
+            <if test="keykind == 'user_nm'">AND A.user_nm like '%' || #{keyword} || '%'</if>
+        </if>
+
+
+    </select>
+
+
+    <!--
+
+                SELECT level as conn_lvl,  A.*
+                FROM TB_MENU A
+                WHERE use_yn  ='Y'
+                AND   menu_gb = 'ADMIN'
+                START WITH (      menu_no = #{top_menu_no}
+                             AND  EXISTS (
+                                             SELECT 'X'
+                                             FROM   TB_USERMENU C
+                                             WHERE  USER_ID =  #{user_id}
+                                             AND    A.MENU_NO = C.MENU_NO
+                                             UNION ALL
+                                             SELECT 'X'
+                                             FROM   DUAL
+                                             WHERE  'ADMIN' = #{user_type}
+                                          )
+                             )
+                CONNECT BY PRIOR A.menu_no = A.up_menu_no
+                ORDER SIBLINGS BY ORD
+
+     -->
+
+
+    <select id="menuDetail" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.*
+        FROM TB_MENU A
+
+        WHERE A.MENU_NO = nvl(#{menu_no}, -999)
+
+    </select>
+
+
+    <select id="menuContentList" parameterType="java.util.Map" resultType="java.util.Map">
+
+        SELECT A.*
+        FROM (
+        select distinct *
+        from (
+        SELECT *
+        FROM TB_MENU P
+        WHERE use_yn = 'Y'
+        AND CONT_USER_ID = #{cont_user_id}
+        <if test="menu_gb    != null">AND menu_gb = #{menu_gb}</if>
+        CONNECT BY prior P.UP_MENU_NO = P.MENU_NO
+        union all
+        select *
+        from tb_menu
+        where menu_no in (
+        SELECT top_menu_no
+        FROM TB_MENU P
+        WHERE use_yn = 'Y'
+        AND CONT_USER_ID = #{cont_user_id}
+        <if test="menu_gb    != null">AND menu_gb = #{menu_gb}</if>
+        )
+        ) A
+        ) A
+        WHERE 1=1
+        <if test="sort_ord  != null">ORDER BY ${sort_ord}</if>
+        <if test="sort_ord  == null">ORDER BY B.ORD, A.TOP_MENU_NO, A.ORD, A.MENU_NO</if>
+
+
+    </select>
+
+    <select id="menuList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT /*+index(A TB_MENU_PK)*/ A.*
+        FROM TB_MENU A
+        WHERE 1=1
+        <if test="cont_user_id    != null">
+            AND MENU_NO in (
+            SELECT menu_no
+            FROM (
+            SELECT /*+index(P IDX_TB_MENU_04)*/ *
+            FROM TB_MENU P
+            WHERE use_yn = 'Y'
+            AND CONT_USER_ID = #{cont_user_id}
+            ) P
+            CONNECT BY prior P.UP_MENU_NO = P.MENU_NO
+            )
+        </if>
+
+        <if test="menu_gb    != null">AND A.menu_gb = #{menu_gb}</if>
+        <if test="up_menu_no != null">AND A.up_menu_no = #{up_menu_no}</if>
+
+        <if test="sort_ord  != null">ORDER BY ${sort_ord}</if>
+        <if test="sort_ord  == null">ORDER BY A.TOP_MENU_NO, A.ORD, A.MENU_NO</if>
+
+    </select>
+
+    <select id="menuAuthList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.*
+        FROM TB_USERMENU A
+        WHERE A.USER_ID = nvl(#{user_id}, '-')
+    </select>
+
+
+    <select id="menuCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(*)
+        FROM TB_MENU A
+        WHERE 1=1
+
+        <if test="menu_gb    != null">AND A.menu_gb = #{menu_gb}</if>
+        <if test="up_menu_no != null">AND A.up_menu_no = #{up_menu_no}</if>
+
+    </select>
+
+
+    <select id="menuDownCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(*)
+        FROM TB_MENU A
+        WHERE A.FULL_MENU_NO LIKE (SELECT B.FULL_MENU_NO || '%'
+                                   FROM TB_MENU B
+                                   WHERE B.MENU_NO = #{menu_no   , jdbcType=INTEGER}
+                                     AND A.MENU_LVL <![CDATA[ > ]]> B.MENU_LVL
+        )
+    </select>
+
+
+    <select id="menuNextValue" parameterType="java.util.Map" resultType="Long">
+        SELECT SEQ_TB_MENU.nextval
+        FROM dual
+    </select>
+
+    <!--  메뉴 등록하기 -->
+    <insert id="menuInsert" parameterType="java.util.Map">
+
+        INSERT INTO TB_MENU
+        (MENU_NO,
+         MENU_NM,
+         MENU_GB,
+         MENU_URL,
+         MENU_LVL,
+         BRD_MGRNO,
+         TOP_MENU_NO,
+         FULL_MENU_NO,
+         UP_MENU_NO,
+         MENU_FMT_CD,
+         URL_TARGET,
+         MENU_DESC,
+         USE_YN,
+         ORD,
+         CONT_USER_ID,
+         DEPT_NM,
+         DEPT_TELNO,
+         DEPT_CHARGE_NM,
+         DEPT_EMAIL,
+         REG_DT)
+        VALUES (#{menu_no     , jdbcType=INTEGER},
+                #{menu_nm     , jdbcType=VARCHAR},
+                nvl(#{menu_gb , jdbcType=VARCHAR}, 'ADMIN'),
+                #{menu_url    , jdbcType=VARCHAR},
+                #{menu_lvl    , jdbcType=INTEGER},
+                #{brd_mgrno   , jdbcType=INTEGER},
+                #{top_menu_no , jdbcType=INTEGER},
+                #{full_menu_no, jdbcType=VARCHAR},
+                #{up_menu_no  , jdbcType=INTEGER},
+                #{menu_fmt_cd , jdbcType=VARCHAR},
+                #{url_target  , jdbcType=VARCHAR},
+                #{menu_desc   , jdbcType=VARCHAR},
+                nvl(#{use_yn  , jdbcType=VARCHAR}, 'Y'),
+                #{ord         , jdbcType=INTEGER},
+                #{cont_user_id, jdbcType=VARCHAR},
+                #{dept_nm     , jdbcType=VARCHAR},
+                #{dept_telno  , jdbcType=VARCHAR},
+                #{dept_charge_nm  , jdbcType=VARCHAR},
+                #{dept_email      , jdbcType=VARCHAR},
+                to_char(sysdate, 'yyyymmdd'))
+    </insert>
+
+    <!-- 메뉴  수정하기 -->
+    <update id="menuUpdate" parameterType="java.util.Map">
+        UPDATE TB_MENU
+        SET MENU_GB        = Nvl(#{menu_gb,  jdbcType=VARCHAR}, menu_gb),
+            MENU_NM        = Nvl(#{menu_nm,  jdbcType=VARCHAR}, menu_nm),
+            BRD_MGRNO      = #{brd_mgrno   , jdbcType=INTEGER},
+            USE_YN         = Nvl(#{use_yn,   jdbcType=VARCHAR}, USE_YN),
+            MENU_URL       = #{menu_url,     jdbcType=VARCHAR},
+            URL_TARGET     = #{url_target,   jdbcType=VARCHAR},
+            MENU_FMT_CD    = #{menu_fmt_cd , jdbcType=VARCHAR},
+            MENU_DESC      = #{menu_desc   , jdbcType=VARCHAR},
+            DEPT_NM        = #{dept_nm     , jdbcType=VARCHAR},
+            DEPT_TELNO     = #{dept_telno  , jdbcType=VARCHAR},
+            DEPT_CHARGE_NM = #{dept_charge_nm  , jdbcType=VARCHAR},
+            DEPT_EMAIL     = #{dept_email      , jdbcType=VARCHAR},
+            CONT_USER_ID   = #{cont_user_id    , jdbcType=VARCHAR},
+            ORD            = NVL(#{ord ,     jdbcType=INTEGER}, ORD)
+        WHERE MENU_NO = #{menu_no,	jdbcType=INTEGER}
+    </update>
+
+    <!-- 메뉴  데이타 삭제하기 -->
+    <delete id="menuDelete" parameterType="java.util.Map">
+        DELETE
+        FROM TB_MENU
+        WHERE MENU_NO = #{menu_no}
+    </delete>
+
+    <!-- 메뉴  데이타 삭제하기 -->
+    <delete id="userMenuDelete" parameterType="java.util.Map">
+        DELETE
+        FROM TB_USERMENU
+        WHERE USER_ID = #{user_id}
+    </delete>
+
+    <insert id="userMenuInsert" parameterType="java.util.Map">
+        INSERT INTO TB_USERMENU (user_id, menu_no)
+        VALUES (#{user_id,  jdbcType=VARCHAR},
+                #{menu_no,  jdbcType=INTEGER})
+    </insert>
+
+
+    <update id="userMenuUpdate" parameterType="java.util.Map">
+
+
+        INSERT INTO TB_USERMENU (user_id, menu_no, reg_dt)
+        SELECT #{user_id}, A.menu_no, to_char(sysdate, 'yyyymmdd')
+        FROM (
+                 SELECT P.*
+                 FROM TB_MENU P
+                 WHERE use_yn = 'Y'
+                 START WITH menu_no = #{menu_no}
+                 CONNECT BY prior P.UP_MENU_NO = P.MENU_NO
+             ) A
+        WHERE NOT EXISTS(SELECT 'X'
+                         from TB_USERMENU B
+                         WHERE A.MENU_NO = B.MENU_NO
+                           AND B.user_id = #{user_id}
+            )
+
+    </update>
+
+
+    <select id="menuTopList" parameterType="java.util.Map" resultType="java.util.Map">
+         <![CDATA[
+        select a.*,
+               (select count(*)
+                from tb_menu
+                where top_menu_no = a.menu_no
+                  and menu_lvl not in (1, 3)
+                  and use_yn = 'Y') as child_cnt
+        from tb_menu a
+        where menu_gb = 'ADMIN'
+          and use_yn = 'Y'
+        order by top_menu_no, menu_lvl
+        ]]>
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- oracle null process -->
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+
+    <mappers>
+        <mapper resource="mapper/com/biz/AdminMember.xml"/>
+        <mapper resource="mapper/com/biz/Board.xml"/>
+        <mapper resource="mapper/com/biz/Boardmgr.xml"/>
+        <mapper resource="mapper/com/biz/Common.xml"/>
+        <mapper resource="mapper/com/biz/Code.xml"/>
+        <mapper resource="mapper/com/biz/Member.xml"/>
+        <mapper resource="mapper/com/biz/Menu.xml"/>
+        <mapper resource="mapper/com/biz/Data.xml"/>
+    </mappers>
+</configuration>

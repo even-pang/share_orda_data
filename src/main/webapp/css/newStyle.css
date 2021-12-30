@@ -1,0 +1,51 @@
+.flex_wrap {display: flex; width: 100%;}
+                            .flex_wrap .flex_1 {flex: 1; text-align: right;}
+                            .sch_text {width: 137px; padding-right: 15px;}
+                            .sch_text + .ipt {width: calc(100% - 137px); }
+                            .board_search_wrap {margin-top: 50px; min-width: auto;}
+                            .board_list_normal {min-width: auto;}
+                            .ipt_group .ipt {
+                                margin-left: 0;
+                            }
+
+                            .board_list_write { width: 100%; border-top: 2px solid #333; }
+                            .board_list_write > thead > tr > th { border: 1px solid #dbdbdb; background-color: #f7f9fb; font-size: 15px; color: #333; font-weight: bold; padding: 20px; }
+                            .board_list_write > tbody > tr > th { width: 150px; border: 1px solid #dbdbdb; background-color: #f7f9fb; font-size: 15px; color: #333; vertical-align: middle; text-align: center; font-weight: bold;  padding: 20px; box-sizing: border-box; word-break:break-all; }
+                            .board_list_write > tbody > tr > th.req:after { content: '*'; color: #ed0000; }
+                            .board_list_write > thead > tr > td,
+                            .board_list_write > tbody > tr > td { border: 1px solid #dbdbdb; font-size: 1em; color: #666; vertical-align: middle; padding: 10px 20px; box-sizing: border-box; word-break:break-all; }
+
+                            @media all and (max-width:1025px) { 
+                                .flex_wrap {display: block;}
+                                .flex_wrap .flex_1 {flex: none; clear: both; text-align: left;}
+                                .ipt_group { height: auto; }
+                                .board_search_wrap .sch_text {
+                                    float: none;
+                                    height: auto;
+                                    line-height: inherit;
+                                    display: inline-block;
+                                }
+                                .board_search_wrap .ipt_group .ipt {
+                                    float: none;
+                                    display: inline-block;
+                                }
+                                .ipt_group + .ipt_group {
+                                    margin-top: 0;
+                                }
+                                .sch_text {width: 90px; padding-right: 15px; font-size: 12px; text-align: right;}
+                                .board_search_wrap .ipt_group .ipt { width: calc(100% - 100px); }
+                                .pagination {
+                                    padding: 15px 0;
+                                }
+                            }
+                            @media all and (max-width:375px) { 
+                                .board_search_wrap {
+                                    padding-left: 10px;
+                                    padding-right: 10px;
+                                }
+                                .sch_text {
+                                    padding-right: 5px;
+                                }                    
+                                .datepicker .ipt {min-width: auto;}
+                                .board_list_write > tbody > tr > th {width: auto;}
+                            }

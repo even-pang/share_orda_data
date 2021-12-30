@@ -1,0 +1,1043 @@
+@charset "UTF-8";
+
+*{
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', sans-serif;
+    margin: 0; padding: 0;
+    list-style: none;
+    text-decoration: none;
+    outline:none;
+    color: #333;
+}
+.clear{
+    clear: both;
+}
+body{
+    width: 100%;
+    min-width: 100%;
+}
+#wrap{
+    width: 1600px;
+    margin: 0 auto;
+    min-width: 1600px;
+}
+
+/****************************************************************************************************************** header */
+
+#logo{
+    margin: 20px 0 10px;
+    height: 75px;
+}
+#logo h1{
+    font-family: 'Lobster', cursive;
+    font-size: 55px;
+    margin-left: 20px;
+    color: #2730ad;
+    font-weight: normal;
+    width: 300px;
+}
+#mainMenu{
+    border-bottom: 1px solid #ccc;
+}
+#mainMenu ul li{
+    display: inline-block;
+    cursor: pointer;
+    width: 130px;
+    height: 60px;
+    margin-right: -6px;
+    text-align: center;
+    line-height: 60px;
+    font-weight: bold;
+    transition: 0.3s color;
+}
+#mainMenu ul li:hover{
+    color: #f2685b;
+}
+.mainOn a{
+    color: #f2685b;
+}
+
+
+#subMenu{
+    margin-top: 50px;
+    width: 13%;
+    float: left;
+}
+#subMenu ul{
+    box-shadow: 3px 3px 3px #ccc;
+    border: 1px solid rgb(240, 240, 240);
+
+}
+
+#subMenu ul li{
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0px;
+    transition: 0.3 color;
+}
+#subMenu ul li:hover{
+    color: red;
+}
+.subOn{
+    color: red;
+}
+/*****************************************************************************************************/
+#section{
+    float: right;
+    height: 20px;
+    padding-top: 50px;
+    width: 84%;
+}
+#titleDiv{
+    border: 1px solid rgb(240, 240, 240);
+    border-bottom: 1px solid #ccc;
+}
+#titleDiv h1{
+    padding: 20px;
+    font-size: 30px;
+    color: black;
+}
+
+#shadowDiv{
+    box-shadow: 3px 3px 3px #ccc;
+    border: 1px solid #ddd;
+}
+
+/**************************************************************************************************** btn css*/
+.btn{
+    border-radius: 5px;
+    background-color: rgb(28, 28, 28);
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s background-color;
+}
+.btn:hover{
+    background-color: rgb(154, 2, 0);
+}
+
+.btn2{
+	cursor: pointer;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.btn2:hover{
+	color: #f2685b;
+    border: 1px solid #f2685b;
+}
+/**************************************************************************************************** btn css*/
+/* 테이블 */
+
+#listTbl{
+    width:100%;
+    margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+#listTbl th{
+    text-align: center;
+    font-size: 15px;
+    background-color: #eee;
+}
+#listTbl tr{
+    border-bottom: 1px solid #ddd;
+}
+
+
+#listTbl th, #listTbl td{
+    padding: 15px;
+}
+#listTbl td{
+    font-size: 14px;
+    color: #444;
+    line-height: 20px;
+}
+#listTbl thead tr{
+    background-color: rgb(240, 240, 240);
+    border-bottom: 1px solid #ccc;
+}
+
+#boardAddBtn{
+    padding: 10px 20px;
+    margin: 30px;
+}
+
+/* 페이징 */
+#listPage {
+    text-align: center;
+    margin-top: 50px;
+    
+}
+
+#listPage li {
+    display: inline-block;
+    width: 35px;
+    line-height: 35px;
+    text-align: center;
+    height: 35px;
+    border: 1px solid #ccc;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+#listPage li:hover {
+    background-color: black;
+    color: white;
+}
+
+#listPageDiv{
+    margin-bottom: 200px;
+}
+
+
+
+/* board_config.css */
+
+.configTbl td{
+    text-align: left;
+}
+.configTbl input[type="text"]{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    padding: 0 10px;
+}
+.configTbl input[type="text"]:focus{
+    border-bottom: 1px solid #aaa;
+}
+.configTbl input[type="password"]{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    padding: 0 10px;
+}
+.configTbl input[type="password"]:focus{
+    border-bottom: 1px solid #aaa;
+}
+.configTbl select{
+    border: 1px solid #ccc;
+    color: #444;
+    width: 140px;
+    height: 30px;
+    padding: 5px;
+}
+.configTbl input[type="radio"]{
+    position: relative;
+    top: 1.5px;
+    margin: 0 3px 0 10px;
+}
+.configTbl label{
+    position: relative;
+    top: -1.5px;
+}
+.centerText{
+    text-align: center;
+}
+.configTbl #contentsBox{
+    margin: 25px 10px 20px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 95%;
+    resize: none;
+}
+.configTbl #contentsBox:focus{
+    border: 1px solid #aaa;
+}
+.configTbl .buttonTd{
+    text-align: center;
+}
+.configTbl .buttonTd button{
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;    
+}
+.buttonTd a{
+	cursor: pointer;
+    width: 150px;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;   
+}
+.configTbl .buttonTd button:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.configTbl .buttonTd button:first-child{
+    margin-right: 10px;
+}
+
+.configShadowDiv{
+    box-shadow: 3px 3px 3px #ccc;
+    margin-bottom: 150px;
+}
+
+
+/* board_detail.css */
+
+
+.boardDetailTbl{
+    border: none;
+    width: 95%;
+    margin-top: 30px;
+}
+
+.boardDetailTbl th{
+    width: 15%;
+    margin-right: 10px;
+}
+.boardDetailTbl td{
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+.boardDetailTbl tr:first-child td{
+    border-top: 1px solid #ddd;
+}
+.boardDetailTbl tr:last-child td{
+    border: none;
+}
+
+.boardDetailTbl td{
+	text-align: left;
+}
+.boardDetailTbl .buttonTd {
+	text-align: center;
+}
+.boardDetailTbl .buttonTd button{
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.boardDetailTbl .buttonTd button:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.boardDetailTbl .buttonTd button:last-child{
+    margin-right: 0;
+}
+
+
+/* board_write_modify.css */
+
+
+.modifyTbl{
+    border: none;
+    width: 95%;
+    margin-top: 30px;
+}
+
+.modifyTbl th{
+    width: 15%;
+    margin-right: 10px;
+}
+.modifyTbl td{
+    padding: 20px;
+    text-align: left;
+    border-right: 1px solid #ddd;
+}
+.modifyTbl tr:first-child td{
+    border-top: 1px solid #ddd;
+}
+.modifyTbl tr:last-child td{
+    border: none;
+}
+
+.modifyTbl .textField{
+    padding: 10px;
+    width: 40%;
+    border:none;
+    border-bottom: 1px solid #bbb;
+    outline: none;
+}
+.modifyTbl .textField:focus{
+    border-bottom: 1px solid gray;
+}
+.modifyTbl .searchField{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+.modifyTbl .searchField:focus{
+    border: 1px solid gray;
+}
+.modifyTbl #contentBox{
+    resize: none;
+    width: 100%;
+    height: 250px;
+    border: 1px solid #ccc;
+}
+.modifyTbl #contentBox:focus{
+    border: 1px solid gray;
+    padding: 15px;
+}
+
+.modifyTbl label{
+    font-weight: bold;
+}
+
+.modifyTbl .buttonTd{
+    text-align: center;
+}
+.modifyTbl .buttonTd button{
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    transition: 0.3s all;    
+    margin-right: 10px;
+}
+.modifyTbl .buttonTd button:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.modifyTbl .buttonTd button:last-child{
+    margin-right: 0;
+}
+
+
+/* quantityControl.css */
+
+/******************* top ***********************/
+
+.quantityControlWrap #titleDiv{
+    margin-bottom: 30px;
+}
+.quantityControlWrap #topDivTitle{
+    display: inline-block;
+    background-color: rgb(49, 58, 67);
+    width: 200px;
+    height: 70px;
+    color: white;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    margin-top: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+
+/******************* top-left ***********************/
+
+.quantityControlWrap #topLeftDiv{
+    width: 48%;
+    float: left;
+    margin-bottom: 100px;
+}
+.quantityControlWrap #detailTbl{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    height: 381px;
+    border-bottom: none;
+    text-align: center;
+}
+.quantityControlWrap #detailTbl th, #detailTbl td{
+    border-bottom: 1px solid rgb(230, 230, 230);
+    padding: 0 20px;
+    height: 70px;
+}
+.quantityControlWrap #detailTbl th{
+    text-align: center;
+    font-size: 17px;
+    width: 25%;
+    border: 1px solid #ccc;
+}
+
+.quantityControlWrap #detailTbl td{
+    font-size: 16px;
+    color: #555;
+    padding: 15px;
+}
+.quantityControlWrap #detailTbl tr:last-child th, #detailTbl tr:last-child td{
+    border-bottom: 1px solid #ccc !important;
+}
+.quantityControlWrap .su{
+    background-color: rgb(252, 232, 233);
+}
+.quantityControlWrap .do{
+    background-color: rgb(230, 245, 252);
+}
+/******************* top-right ***********************/
+
+
+.quantityControlWrap #topRightDiv{
+    width: 48%;
+    float: right;
+    text-align: center;
+}
+.quantityControlWrap #top_maesuDiv{
+    float: left;
+    height: 381px;
+    width: 50%;
+    background-color: rgb(252, 232, 233);
+}
+.quantityControlWrap #top_maedoDiv{
+    float: right;
+    height: 381px;
+    width: 50%;
+    background-color: rgb(230, 245, 252);
+}
+.quantityControlWrap .topDivTitle{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+    padding: 30px;
+}
+.quantityControlWrap #topMaesuTitle{
+    color: rgb(203, 31, 29);
+}
+.quantityControlWrap #topMaedoTitle{
+    color: rgb(1, 156, 222);
+}
+.quantityControlWrap .top_right_p{
+    margin-bottom: 15px;
+}
+.quantityControlWrap .filedBtn{
+    width: 85%;
+    margin: 15px auto 25px;
+}
+.quantityControlWrap .countField{
+    height: 45px;
+    text-align: center;
+    border: 1px solid #ccc;
+    width: 58%;
+}
+.quantityControlWrap .inputBtn{
+    display:inline-block;
+    height: 45px;
+    width: 43%;
+    background-color: rgb(245, 245, 245);
+    margin-left: -10px;
+    outline: none;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s all;
+}
+.quantityControlWrap .inputBtn:hover{
+    background-color: rgb(49, 58, 67);
+    color: white;
+}
+.quantityControlWrap .redBtn, .blueBtn{
+    width: 85%;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border: none;
+    color: white;
+    padding: 15px 0;
+}
+
+.quantityControlWrap .redBtn{
+    background-color: rgb(203, 31, 29);
+}
+.quantityControlWrap .blueBtn{
+    background-color: rgb(1, 156, 222);
+}
+
+/******************* bot ***********************/
+.quantityControlWrap #botDiv{
+    margin-bottom: 700px;
+}
+.quantityControlWrap .borderP{
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+.quantityControlWrap #bot_maesuDiv, .quantityControlWrap #bot_maedoDiv{
+    width: 49%;
+}
+.quantityControlWrap #bot_maesuDiv{
+    float: left;
+}
+.quantityControlWrap #bot_maedoDiv{
+    float: right;
+}
+.quantityControlWrap #maesuTbl, .quantityControlWrap #maedoTbl{
+    width: 100%;
+    border: 1px solid #ccc;
+}
+.quantityControlWrap .botTbl{
+    text-align: center;
+    border-collapse: collapse;
+}
+.quantityControlWrap .botTbl thead tr td{
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    font-size: 20px;
+}
+.quantityControlWrap .botTbl tbody tr td{
+    padding: 15px 0;
+    border: 1px solid #ddd;
+}
+.quantityControlWrap .botTbl tbody tr td:first-child{
+    width: 40%;
+}
+
+.quantityControlWrap #maesuTblTitle{
+    background-color: rgb(252, 232, 233);
+    margin-bottom: 200px;
+}
+.quantityControlWrap #maedoTblTitle{
+    background-color: rgb(230, 245, 252);
+}
+.quantityControlWrap .botBtn{
+    width: 40%;
+    cursor: pointer;
+    background-color: white;
+    outline: none;
+    padding: 15px 0;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s all;
+}
+.quantityControlWrap .waitBtn{
+    border: 1px solid rgb(1, 156, 222);
+    color: rgb(1, 156, 222);
+    background-color: rgba(1, 156, 222, 0.1);
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.quantityControlWrap .stopBtn{
+    border: 1px solid rgb(203, 31, 29);
+    color: rgb(203, 31, 29);
+    background-color: rgba(203, 31, 29, 0.1);
+}
+.quantityControlWrap .waitBtn:hover{
+    background-color: rgb(1, 156, 222);
+    color: white;
+}
+.quantityControlWrap .stopBtn:hover{
+    background-color: rgb(203, 31, 29);
+    color: white;
+}
+
+
+/* realTimeOrderStatus.css */
+
+
+.realTimeOrderStatusWrap #wrapping{
+    width: 100%;
+}
+.realTimeOrderStatusWrap #hrDiv{
+    margin-bottom: 30px;
+}
+.realTimeOrderStatusWrap #topWrap{
+    margin-top: 50px;
+}
+.realTimeOrderStatusWrap #epiDiv{
+    float: left;
+    width: 15%;
+    text-align: center;
+    background-color: rgb(49, 58, 67);
+    height: 150px;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+.realTimeOrderStatusWrap #epiDiv span{
+    color: white;
+}
+.realTimeOrderStatusWrap .topRightDiv{
+    width: 20%;
+    float: right;
+}
+.realTimeOrderStatusWrap #epiTitle{
+    font-weight: bold;
+    font-size: 35px;
+    display: inline-block;
+    margin: 23px 0 13px;
+}
+.realTimeOrderStatusWrap #epiDate{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.realTimeOrderStatusWrap .topRightDiv{
+    padding: 10px;
+}
+.realTimeOrderStatusWrap .topRightDiv table{
+    border-collapse: collapse;
+    width: 100%;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr:first-child td{
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 20px !important;
+    text-align: center !important;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr td{
+    padding: 15px 3px;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr td:first-child{
+    font-weight: bold;
+}
+.realTimeOrderStatusWrap .topRightDiv table tr td:last-child{
+    text-align: right;
+    font-size: 14px;
+    color: #444;
+}
+.realTimeOrderStatusWrap #topMaedoDiv{
+    background-color: rgb(230, 245, 252);
+    border: 1px solid rgba(1, 156, 222, 0.1);
+    border-radius: 5px;
+}
+.realTimeOrderStatusWrap #topMaesuDiv{
+    background-color: rgb(252, 232, 233);
+    border: 1px solid rgba(203, 31, 29, 0.1);
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.realTimeOrderStatusWrap #topMaedoDiv table tr:first-child td{
+    color: rgb(1, 156, 222);
+}
+.realTimeOrderStatusWrap #topMaesuDiv table tr:first-child td{
+    color: rgb(203, 31, 29);
+}
+.realTimeOrderStatusWrap #listTbl{
+    width: 100%;
+}
+
+
+/*WithdrawalApplication.css*/
+.waWrap #section{
+    margin-bottom: 2000px;
+}
+.waWrap #titleDiv{
+    margin-bottom: 30px;
+}
+.waWrap #searchDiv, .boardDiv #searchDiv{
+    background-color: rgb(49, 58, 67);
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 3px;
+}
+.boardDiv #searchDiv{
+	margin-bottom: 0px !important;
+}
+.waWrap .searchField, .boardDiv .searchField{
+    display: inline-block;
+    background-color: white;
+    width: 130px;
+    outline: none;
+    border: none;
+    height: 35px;
+    padding: 10px;
+    margin-right: 15px;
+    border-radius: 3px;
+}
+
+.waWrap #searchField, .boardDiv #searchField{
+    width: 200px;  
+    border: none;
+}
+.waWrap #botSearchField{
+    width: 300px;
+}
+
+.waWrap #schBtn, .boardDiv #schBtn{
+    cursor: pointer;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    outline: none;
+    border: none;
+    background-color: white;
+}
+.waWrap #schBtn i, .boardDiv #schBtn o{
+    font-size: 18px;
+}
+.waWrap input[type=date]::-webkit-inner-spin-button {
+    display: none;
+}
+.boardDiv input[type=date]::-webkit-inner-spin-button{
+	display: none;
+}
+
+.waWrap .borderP{
+    border-bottom: 1px solid #ccc;
+}   
+.waWrap #topDivTitle{
+    display: inline-block;
+    background-color: rgb(49, 58, 67);
+    width: 200px;
+    height: 70px;
+    color: white;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+
+.waWrap #leftSchDiv{
+    float: left;
+}
+
+.waWrap #rightSchDiv{
+    float: right;
+    margin-top: 30px;
+}
+.waWrap .orderBtn{
+    cursor: pointer;
+    background-color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    transition: 0.3s all;
+    font-weight: bold;
+    font-size: 15px;
+}
+.waWrap .orderBtn:hover{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+.waWrap .orderBtnOn{
+    color: #f2685b;
+    border: 1px solid #f2685b;
+}
+
+.waWrap #listTbl{
+    width: 100%;
+}
+.waWrap #listTbl td{
+    color: #555;
+    font-weight: bold;
+}
+.waWrap #listPage {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+
+.waWrap #listPageDiv p, .boardDiv #listPageDiv p{
+    margin: 20px 10px 0 0;
+    text-align: right;
+}
+
+.waWrap .btn3, .boardDiv .btn3{
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 15px 25px;
+    background-color: rgb(49, 58, 67);
+    border: none;
+    color: white;
+    font-size: 15px;
+    transition: 0.3s all;
+}
+.waWrap .btn3:hover, .boardDiv .btn3:hover{
+    background-color: rgb(207, 28, 31);
+}
+.waWrap #eventPointBtn, #excelDownBtn{
+    background-color: white;
+    color: rgb(255, 17, 21);
+    border: 1px solid #f2685b;
+    padding: 10px 20px;
+    display: inline-block;
+    margin-left: 50px;
+    transition: 0.3s all;
+}
+#excelDownBtn{
+	margin-left: 15px !important;
+}
+.waWrap #eventPointBtn:hover, #excelDownBtn:hover{
+    background-color: rgb(207, 28, 31);
+    color: white;
+    border: 1px solid rgb(207, 28, 31);
+}
+
+
+
+.waWrap .botSearchDiv{
+    margin-bottom: 0 !important;
+}
+.waWrap #botCenterDiv{
+    border: 1px solid #ddd;
+    padding: 50px;
+}
+.waWrap .cDiv{
+    float: left;
+    height: 300px;
+    background-color: rgb(235, 235, 235);
+    width: 32%;
+    border-right: 1px solid #ccc;
+    padding: 30px;
+}
+.waWrap #leftDiv{
+    margin-left: 24px;
+}
+.waWrap #leftDiv table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.waWrap #leftDiv table td{
+    padding: 20px;
+}
+.waWrap #leftDiv table td input[type="text"]{
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.waWrap #leftDiv table tr{
+    border-bottom: 1px solid #ccc;
+}
+.waWrap #leftDiv table tr td:first-child{
+    font-weight: bold;
+    color: #444;
+}
+.waWrap #leftDiv table tr:last-child{
+    border-bottom: none;
+}
+
+.waWrap #midDiv{
+    text-align: center;
+}
+.waWrap #midFieldDiv{
+    padding-top: 28px;
+}
+.waWrap .pmBtn{
+    width: 33px;
+    height: 33px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.waWrap #plusBtn{
+    background-color: rgb(1, 156, 222);
+    border: 1px solid rgb(1, 156, 222);
+}
+.waWrap #minusBtn{
+    background-color: rgb(203, 31, 29);
+    border: 1px solid rgb(203, 31, 29);
+}
+.waWrap #rightDiv{
+    border-right: none;
+}
+.waWrap #pmField{
+    height: 38px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    width: 172.8px;
+}
+.waWrap #midTextDiv{
+    width: 363px;
+}
+.waWrap #pmField::placeholder{
+    color: #666;
+    font-size: 12px;
+}
+.waWrap #midDiv table{
+    width: 363px;
+    margin-top: 20px;
+    padding: 0 50px;
+}
+.waWrap #midDiv table tr td{
+    padding: 20px 0;
+    font-weight: bold;
+}
+.waWrap #rightDiv{
+    text-align: right;
+    font-weight: bold;
+    padding-top: 100px;
+    margin-right: 15px;
+}
+.waWrap #totalP{
+    color: #666;
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+}
+.waWrap #totalPriceP{
+    font-size: 30px;
+}
+.waWrap #bot_botDiv{
+    text-align: right;
+    padding: 40px 30px 0 0;
+}
+
+/* board_list.css */
+
+.boardDiv select{
+	display: inline-block;
+    border: 1px solid #ccc;
+    color: #444;
+    width: 130px;
+    height: 35px;
+    padding: 5px;
+    border-radius: 3px;
+    margin-right: 15px;
+}
+.schSpan{
+	color: white; 
+	font-size: 17px; 
+	font-weight: bold; 
+	padding-right: 15px;
+}
+
+/* subsubmenu.css */
+
+.subsubmenu{
+	background-color: rgb(240,240,240);
+}
+
+.hide{
+	display:none;
+}
+
+.slideOn{background-color: rgb(28,28,28);}
+.slideOn a{color: white !important;}
